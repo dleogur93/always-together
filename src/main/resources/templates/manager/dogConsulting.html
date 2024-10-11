@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+            <div th:replace="~{fragments.html :: manager-side-nav}"></div>
+        </div>
+        <div class="col-8 margin">
+            <div class="row margin">
+                <h2> 예약 일정 </h2>
+                <hr>
+                <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+                    <span th:text="${message}">수정</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+             </div>
+
+
+            <div class="row margin">
+                <h2>  오늘 예약 일정 </h2>
+                <div class="text-center">
+                    <p class="lead" th:if="${todayDogReservations.isEmpty()}">
+                        <strong th:text="${today}" id="today"></strong>에 예약이 없습니다.
+                    </p>
+                </div>
+                <table class="table rounded-table margin">
+                    <thead>
+                    <tr class="table-info">
+                        <th scope="col">예약 날짜</th>
+                        <th scope="col">유기견 이름</th>
+                        <th scope="col">예약자 성함</th>
+                        <th scope="col">예약신청한 날짜</th>
+                        <th scope="col">입양 확정</th>
+                        <th scope="col">취소하기</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="link_btn hover" th:each="todayDogReservation: ${todayDogReservations}">
+                        <td style="text-align: left;">
+                            <h6 class="reservationTime" th:text="${todayDogReservation.getReservationTime}">예약 날짜</h6>
+                        </td>
+                        <td style="text-align: left;">
+                            <h6 th:text="${todayDogReservation.dog.dogName}">유기견 이름</h6>
+                        </td>
+                        <td style="text-align: left;">
+                            <h6 th:text="${todayDogReservation.account.name}">예약자 성함</h6>
+                        </td>
+                        <td style="text-align: left;">
+                            <h6 th:text="${todayDogReservation.reservationCreateTime}">예약신청 날짜</h6>
+                        </td>
+                        <td style="text-align: left;">
+                            <form th:action="@{/manager/dogAdoptionConfirmed}"  method="post" >
+                                <input type="hidden" name="id" th:value="${todayDogReservation.id}" />
+                                <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">입양확정</button>
+                            </form>
+                        </td>
+                        <td style="text-align: left;">
+                            <form th:action="@{/manager/dogReservationDelete}" method="post">
+                                <input type="hidden" name="id" th:value="${todayDogReservation.id}" />
+                                <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">취소하기</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+            <div class="row margin">
+                <h2> 전체 예약 일정 </h2>
+                <table class="table rounded-table margin">
+                <thead>
+                <tr class="table-info">
+                    <th scope="col">예약 날짜</th>
+                    <th scope="col">유기견 이름</th>
+                    <th scope="col">예약자 성함</th>
+                    <th scope="col">예약신청한 날짜</th>
+                    <th scope="col">입양확정</th>
+                    <th scope="col">취소하기</th>
+                </tr>
+                </thead>
+                <tbody >
+                <tr class="link_btn hover" th:each="dogReservation:${dogReservations.getContent()}">
+                    <td style="text-align: left;">
+                        <h6 class="reservationTime" th:text="${dogReservation.getReservationTime}">예약 날짜</h6>
+                    </td>
+                    <td style="text-align: left;">
+                        <h6 th:text="${dogReservation.dog.dogName}">유기견 이름</h6>
+                    </td>
+                    <td style="text-align: left;">
+                        <h6 th:text="${dogReservation.account.name}">예약자 성함</h6>
+                    </td>
+                    <td style="text-align: left;">
+                        <h6 th:text="${dogReservation.reservationCreateTime}">예약신청 날짜</h6>
+                    </td>
+                    <td style="text-align: left;">
+                        <form th:action="@{/manager/dogAdoptionConfirmed}"  method="post" >
+                            <input type="hidden" name="id" th:value="${dogReservation.id}" />
+                            <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">입양확정</button>
+                        </form>
+                    </td>
+                    <td style="text-align: left;">
+                        <form th:action="@{/manager/dogReservationDelete}"  method="post" >
+                            <input type="hidden" name="id" th:value="${dogReservation.id}" />
+                            <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">취소하기</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+
+        <div class="row justify-content-center">
+            <div class="col-sm-10">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${!dogReservations.hasPrevious()}? disabled">
+                            <a th:href="@{'/manger/dogConsulting?sort=reservationTime,asc&page=' + ${dogReservations.getNumber() - 1}}"
+                               class="page-link" tabindex="-1" aria-disabled="true">
+                                이전
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${i == dogReservations.getNumber()}? active"
+                            th:each="i: ${#numbers.sequence(0, dogReservations.getTotalPages() > 0 ? dogReservations.getTotalPages() - 1 : 0)}">
+                            <a th:href="@{'/manager/dogConsulting?sort=reservationTime,asc&page=' + ${i}}"
+                               class="page-link" href="#" th:text="${i + 1}">1</a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${!dogReservations.hasNext()}? disabled">
+                            <a th:href="@{'/manager/dogConsulting?sort=reservationTime,asc&page=' + ${dogReservations.getNumber() - 1}}"
+                               class="page-link">
+                                다음
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="/node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script th:replace="~{fragments.html :: reservation-date-time}"></script>
+</html>

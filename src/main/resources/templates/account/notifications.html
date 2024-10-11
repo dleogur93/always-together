@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}">
+</head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+            <ul class="list-group noti-sidebar">
+                    <a th:href="@{/account/notifications}" th:classappend="${isNew}? active"
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    읽지 않은 알림
+                    <span th:text="${numberOfNotChecked}"></span>
+                    </a>
+
+                    <a th:href="@{/account/notifications/old}" th:classappend="${!isNew}? active"
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        읽은 알림
+                        <span th:text="${numberOfChecked}">0</span>
+                    </a>
+
+            </ul>
+
+            <ul class="list-group mt-4">
+                <a href="#" th:if="${deliveryReadys.size() > 0}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    배송 알람
+                    <span th:text="${deliveryReadys.size()}">3</span>
+                </a>
+            </ul>
+
+            <ul class="list-group mt-4" th:if="${numberOfChecked > 0}">
+                <form th:action="@{/account/notifications}" th:method="post">
+                    <button type="submit" class="btn btn-block btn-outline-warning" aria-describedby="deleteHelp">
+                        읽은 알림 삭제
+                    </button>
+                    <small id="deleteHelp">삭제하지 않아도 한달이 지난 알림은 사라집니다.</small>
+                </form>
+            </ul>
+        </div>
+        <div class="col-8 margin">
+            <div class="row margin">
+                <h2> 알림 </h2>
+                <hr>
+            </div>
+
+            <div class="container mt-5">
+                <div class="card" th:if="${notifications.size() == 0}">
+                    <div class="card-header">
+                        알림 메시지가 없습니다.
+                    </div>
+                </div>
+
+                <div class="card" th:if="${deliveryReadys.size() > 0}">
+                    <div class="card-header">
+                        배송을 시작했습니다.
+                    </div>
+                    <div th:replace="fragments.html :: notification-list (notifications=${deliveryReadys})"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="/node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="/node_modules/dayjs/dayjs.min.js"></script>
+<script type="text/javascript">
+    var createdDateTimeElements = document.querySelectorAll('.createdDateTime');
+    createdDateTimeElements.forEach(function(createdDateTimeElements) {
+        var createdDateTime = createdDateTimeElements.innerText;
+        var formattedReservationTime = dayjs(createdDateTime).format('YYYY년 MM월 DD일 A hh시 mm분');
+        formattedReservationTime = formattedReservationTime.replace('AM', '오전').replace('PM', '오후');
+        createdDateTimeElements.innerText = formattedReservationTime;
+    });
+</script>
+<script>
+    function cancel(id) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/account/orders/" + id + "/cancel");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>
+

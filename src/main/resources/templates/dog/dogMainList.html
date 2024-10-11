@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+
+
+<div class="container mt-3" style="padding-top: 100px;">
+    <div class="row">
+        <div class="col-2">
+            <div th:replace="~{fragments.html :: dog-main-side-nav}"></div>
+        </div>
+        <div class="col-8">
+            <div class="row justify-content-center pt-3">
+                <div th:replace="~{fragments.html :: banner}"></div>
+            </div>
+            <hr>
+            <div class="row justify-content-center pt-3 mt-5">
+                <div class="col-sm-12">
+                    <div class="row">
+                    <div class="col-md-2" th:each="dog: ${dogs}">
+                        <div class="card mb-4 shadow-sm">
+                            <img th:src="${dog.dogPicture}" class="card-img-top" th:alt="${dog.dogName}" >
+                            <div class="card-body">
+                                <a th:href="@{'/dog/description/' + ${dog.id}}" class="text-decoration-none">
+                                    <h5 class="card-title context" th:text="${dog.dogName}"></h5>
+                                </a>
+                                <p class="card-text" th:text="${dog.dogRegistrationDate}">등록일</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-sm-10">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!dogs.hasPrevious()}? disabled">
+                        <a th:href="@{'/dog/mainList?sort=dogName,asc&page=' + ${dogs.getNumber() - 1}}"
+                           class="page-link" tabindex="-1" aria-disabled="true">
+                            이전
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i == dogs.getNumber()}? active"
+                        th:each="i: ${#numbers.sequence(0, dogs.getTotalPages()  > 0 ? dogs.getTotalPages() - 1 : 0)}">
+                        <a th:href="@{'/dog/mainList?sort=dogName,asc&page=' + ${i}}"
+                           class="page-link" href="#" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${!dogs.hasNext()}? disabled">
+                        <a th:href="@{'/dog/mainList?sort=dogName,asc&page=' + ${dogs.getNumber() - 1}}"
+                           class="page-link">
+                            다음
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>

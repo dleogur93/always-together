@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 100px;" >
+    <div class="row justify-content-center w-100">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="row margin">
+                <h2>상세 정보</h2>
+                <hr>
+            </div>
+
+            <div class="container mt-5">
+                <div class="col-md-5 mx-auto">
+                    <form>
+                        <div class="form-group row">
+                            <svg th:if="${#strings.isEmpty(dogDescription.dogPicture)}" class="rounded"
+                                 th:data-jdenticon-value="${dogDescription.dogName}" width="500" height="500"></svg>
+
+                            <img th:if="${!#strings.isEmpty(dogDescription.dogPicture)}" class="rounded"
+                                 th:src="${dogDescription.dogPicture}"
+                                 width="500" height="500" alt="name" th:alt="${dogDescription.dogName}"/>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <!-- 이름 폼 그룹 -->
+                        <div class="form-group row">
+                            <label for="name" class="col-md-3 col-form-label">이름</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="name" th:value="${dogDescription.dogName}" disabled>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+                        <!-- 아이디 폼 그룹 -->
+                        <div class="form-group row">
+                            <label for="dogBreed" class="col-md-3 col-form-label">품종</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="dogBreed" th:value="${dogDescription.dogBreed}" disabled>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <div class="form-group row">
+                            <label for="dogAge" class="col-md-3 col-form-label">나이</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="dogAge" th:value="${dogDescription.dogAge}" disabled>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <div class="form-group row">
+                            <label for="dogSex" class="col-md-3 col-form-label">성별</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="dogSex" th:value="${dogDescription.dogSex == 'MALE' ? '수컷' : '암컷'}" disabled>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <div class="form-group row">
+                            <label for="dogRegistrationDate" class="col-md-3 col-form-label">등록 날짜</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="dogRegistrationDate" th:value="${dogDescription.dogRegistrationDate}" disabled>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <div class="form-group row">
+                            <label for="information" class="col-md-3 col-form-label">정보</label>
+                            <div class="col-md-8">
+                                <div  id="information" th:utext="${dogDescription.information}" >
+                            </div>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <a th:if="${!dogDescription.reservation}" th:href="@{/reservation/dog/{id}(id=${dogDescription.id})}"  class="btn btn-primary">유기견 상담 예약</a>
+                        <button  th:if="${dogDescription.reservation}"  class="btn btn-secondary btn-lg " disabled >이미 상담 예약 완료된 유기견입니다.</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>
+
+
+<!--<div class="container">-->
+<!--    <div class="row justify-content-center pt-3">-->
+<!--        <div class="col-sm-2"></div>-->
+<!--        <div class="col-sm-8">-->
+<!--                <div class="row margin">-->
+<!--                    <h2> 상세 정보 </h2>-->
+<!--                    <hr>-->
+<!--                </div>-->
+
+<!--                <div class="container mt-5 ">-->
+<!--                    <div class=" col-md-5">-->
+<!--                            <form>-->
+<!--                                <div class="form-group row">-->
+<!--                                    <svg th:if="${#strings.isEmpty(dogDescription.dogPicture)}" class="rounded"-->
+<!--                                         th:data-jdenticon-value="${dogDescription.dogName}" width="500" height="500"></svg>-->
+
+<!--                                    <img th:if="${!#strings.isEmpty(dogDescription.dogPicture)}" class="rounded"-->
+<!--                                         th:src="${dogDescription.dogPicture}"-->
+<!--                                         width="500" height="500" alt="name" th:alt="${dogDescription.dogName}"/>-->
+<!--                                </div>-->
+<!--                                <hr class="border-bottom">-->
+
+<!--                                &lt;!&ndash; 이름 폼 그룹 &ndash;&gt;-->
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="name" class="col-md-3 col-form-label">이름</label>-->
+<!--                                    <div class="col-md-8">-->
+<!--                                        <input type="text" class="form-control" id="name" th:value="${dogDescription.dogName}" disabled>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <hr class="border-bottom">-->
+<!--                                &lt;!&ndash; 아이디 폼 그룹 &ndash;&gt;-->
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="dogBreed" class="col-md-3 col-form-label">품종</label>-->
+<!--                                    <div class="col-md-8">-->
+<!--                                        <input type="text" class="form-control" id="dogBreed" th:value="${dogDescription.dogBreed}" disabled>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <hr class="border-bottom">-->
+
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="dogAge" class="col-md-3 col-form-label">나이</label>-->
+<!--                                    <div class="col-md-8">-->
+<!--                                        <input type="text" class="form-control" id="dogAge" th:value="${dogDescription.dogAge}" disabled>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <hr class="border-bottom">-->
+
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="dogSex" class="col-md-3 col-form-label">성별</label>-->
+<!--                                    <div class="col-md-8">-->
+<!--                                        <input type="text" class="form-control" id="dogSex" th:value="${dogDescription.dogSex == 'MALE' ? '수컷' : '암컷'}" disabled>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <hr class="border-bottom">-->
+
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="dogRegistrationDate" class="col-md-3 col-form-label">등록 날짜</label>-->
+<!--                                    <div class="col-md-8">-->
+<!--                                        <input type="text" class="form-control" id="dogRegistrationDate" th:value="${dogDescription.dogRegistrationDate}" disabled>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <hr class="border-bottom">-->
+
+
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="information" class="col-md-3 col-form-label">정보</label>-->
+<!--                                    <div class="col-md-8">-->
+<!--                                        <input type="text" class="form-control" id="information" th:utext="${dogDescription.information}" disabled>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <hr class="border-bottom">-->
+<!--                                &lt;!&ndash;    <div class="form-group col-sm-6">&ndash;&gt;-->
+<!--                                &lt;!&ndash;        <div class="col-md-3"></div>&ndash;&gt;-->
+<!--                                &lt;!&ndash;        <div class="col-md-8">&ndash;&gt;-->
+<!--                                &lt;!&ndash;            <a th:href="@{/manager/dogModify/{id}(id=${dog.id})}" class="btn btn-primary">수정</a>&ndash;&gt;-->
+<!--                                &lt;!&ndash;        </div>&ndash;&gt;-->
+<!--                                &lt;!&ndash;    </div>&ndash;&gt;-->
+<!--                            </form>-->
+<!--                        </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        <div class="col-sm-2"></div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--<script src="/node_modules/jquery/dist/jquery.min.js"></script>-->
+<!--<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--</html>-->

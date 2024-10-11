@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container mt-3" style="padding-top: 100px;">
+    <div class="row">
+        <div class="col-2">
+            <div th:replace="~{fragments.html :: dog-main-side-nav}"></div>
+        </div>
+        <div class="col-8">
+
+            <div class="row justify-content-center pt-3">
+                <div th:replace="~{fragments.html :: banner}"></div>
+            </div>
+            <hr>
+
+            <h2 class="underline-text " th:text="${dogsBreed[0].dogBreed}" >품종</h2>
+
+            <div class="row justify-content-center pt-3 mt-5">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-md-2" th:each="dogsBreed: ${dogsBreed}">
+                            <div class="card mb-4 shadow-sm">
+                                <img th:src="${dogsBreed.dogPicture}" class="card-img-top" th:alt="${dogsBreed.dogName}">
+                                <div class="card-body">
+                                    <a th:href="@{'/dog/description/' + ${dogsBreed.id}}" class="text-decoration-none">
+                                        <h5 class="card-title context" th:text="${dogsBreed.dogName}"></h5>
+                                    </a>
+                                    <p class="card-text" th:text="${dogsBreed.dogRegistrationDate}">등록일</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-2">
+      <div th:replace="~{fragments.html :: manager-side-nav}"></div>
+    </div>
+    <div class="col-8 margin">
+      <div class="row margin">
+        <h2> 유기견 목록 </h2>
+        <hr>
+
+        <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+          <span th:text="${message}">수정</span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          정렬 방식
+        </button>
+
+        <ul class="dropdown-menu" >
+          <li>
+            <a class="dropdown-item"  th:classappend="${#strings.equals(sortProperty,'dogName')}? active"
+               th:href="@{'/manager/dogList?sort=dogName,desc'}">유기견 이름</a>
+          </li>
+
+        </ul>
+      </div>
+
+      <div>
+        <form class="d-flex mt-3" role="search" th:action="@{/manager/dogList}" method="get">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="dogName">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+
+      <table class="table rounded-table margin">
+        <thead>
+        <tr class="table-info">
+          <th scope="col">이름</th>
+          <th scope="col">품종</th>
+          <th scope="col">나이</th>
+          <th scope="col">예약</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr class="link_btn hover" th:each="dog:${dogs.getContent()}">
+          <td style="text-align: left;">
+            <a th:href="@{'/manager/dogInformation/' + ${dog.id}}" >
+              <h6  th:text="${dog.dogName}">이름</h6>
+            </a>
+          </td>
+          <td style="text-align: left;">
+              <h6 th:text="${dog.dogBreed}">아이디</h6>
+          </td>
+          <td style="text-align: left;">
+            <h6  th:text="${dog.dogAge}">나이</h6>
+          </td>
+          <td style="text-align: left;">
+              <h6 th:text="${dog.reservation}">권한</h6>
+          </td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-sm-10">
+        <nav>
+          <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!dogs.hasPrevious()}? disabled">
+              <a th:href="@{'/manger/dogList?sort=' + ${sortProperty} + ',desc&page=' + ${dogs.getNumber() - 1}}"
+                 class="page-link" tabindex="-1" aria-disabled="true">
+                이전
+              </a>
+            </li>
+            <li class="page-item" th:classappend="${i == dogs.getNumber()}? active"
+                th:each="i: ${#numbers.sequence(0, dogs.getTotalPages()  > 0 ? dogs.getTotalPages() - 1 : 0)}">
+              <a th:href="@{'/manager/dogList?sort=' + ${sortProperty} + ',desc&page=' + ${i}}"
+                 class="page-link" href="#" th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${!dogs.hasNext()}? disabled">
+              <a th:href="@{'/manager/dogList?sort=' + ${sortProperty} + ',desc&page=' + ${dogs.getNumber() - 1}}"
+                 class="page-link">
+                다음
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+
+    </div>
+  </div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>

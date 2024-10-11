@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments.html :: head}"></head>
+<style>
+    .margin-bottom-200 {
+        margin-bottom: 200px;
+    }
+</style>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 100px;">
+    <div class="row justify-content-center w-100">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="row margin">
+                <h2>주문 정보</h2>
+                <hr>
+            </div>
+
+            <div class="container mt-5">
+                <div class="col-md-5 mx-auto">
+                    <form th:action="@{/order}" method="post">
+                        <input type="hidden" name="itemId" th:value="${item.id}"/>
+                        <input type="hidden" name="accountId" th:value="${account.id}"/>
+
+
+                        <div class="form-group row">
+                            <svg th:if="${#strings.isEmpty(item.itemPicture)}" class="rounded"
+                                 th:data-jdenticon-value="${item.name}" width="500" height="500"></svg>
+
+                            <img th:if="${!#strings.isEmpty(item.itemPicture)}" class="rounded"
+                                 th:src="${item.itemPicture}"
+                                 width="500" height="500" alt="name" th:alt="${item.name}"/>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <!-- 이름 폼 그룹 -->
+                        <div class="form-group row">
+                            <label for="name" class="col-md-3 col-form-label">상품명</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="name" th:value="${item.name}" disabled>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <!-- 계정 정보 폼 그룹 -->
+                        <div class="form-group row">
+                            <label for="accountName" class="col-md-3 col-form-label">주문자 성함</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="accountName" th:value="${account.name}" disabled>
+                            </div>
+                        </div>
+
+                        <hr class="border-bottom">
+
+                        <!-- 배송 주소 폼 그룹 -->
+                        <div class="form-group row">
+                            <label for="address" class="col-md-3 col-form-label">배송 주소</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="address" th:value="${account.address.getAddress()}" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="detailAddress" class="col-md-3 col-form-label"></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="detailAddress" th:value="${account.address.getDetailAddress()}" required>
+                            </div>
+                        </div>
+
+                        <hr class="border-bottom">
+
+                        <!-- 수량 선택 폼 그룹 -->
+                        <div class="form-group row">
+                            <label for="count" class="col-md-3 col-form-label">수량</label>
+                            <div class="col-md-8">
+                                <select id="count" name="count" class="form-control">
+                                    <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}">1</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr class="border-bottom">
+
+                        <div class="form-group row margin-bottom-200 ">
+                            <div class="col-md-8 offset-md-3 mt-3">
+                                <a id="addCartButton" class="btn btn-primary"
+                                   th:data-item-id="${item.id}"
+                                   th:data-account-id="${account.id}">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> 장바구니
+                                </a>
+                            </div>
+                            <div class="col-md-8 offset-md-3 mt-3">
+                                <button type="submit" class="btn btn-primary">결제하기</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script th:replace="~{fragments.html :: ajax-csrf-header}"></script>
+<script>
+    $(document).ready(function() {
+        $('#addCartButton').click(function(event) {
+            event.preventDefault();
+
+            const accountId = $(this).data('account-id');
+            const itemId = $(this).data('item-id');
+            const count = $('#count').val();
+
+            $(this).data('count', count);
+
+            $.ajax({
+                url: '/account/cart/add',
+                method: 'POST',
+                data: {
+                    accountId: accountId,
+                    itemId: itemId,
+                    count: count
+                },
+                success: function(response) {
+                    alert('장바구니 담기 완료');
+                    window.location.href = '/account/cart';
+                },
+                error: function(error) {
+                    alert('장바구니 담기 실패');
+                }
+            });
+        });
+
+        // 결제하기 버튼에 대한 AJAX 요청도 비슷하게 작성할 수 있습니다.
+    });
+</script>
+</html>

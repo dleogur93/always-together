@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 100px;">
+    <div class="row justify-content-center w-100">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="row margin">
+                <h2>상세 정보</h2>
+                <hr>
+            </div>
+
+            <div class="container mt-5">
+                <div class="col-md-5 mx-auto">
+                    <form th:action="@{/order}" method="get">
+                        <div class="form-group row">
+                            <svg th:if="${#strings.isEmpty(item.itemPicture)}" class="rounded"
+                                 th:data-jdenticon-value="${item.name}" width="500" height="500"></svg>
+
+                            <img th:if="${!#strings.isEmpty(item.itemPicture)}" class="rounded"
+                                 th:src="${item.itemPicture}"
+                                 width="500" height="500" alt="name" th:alt="${item.name}"/>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <!-- 이름 폼 그룹 -->
+                        <div class="form-group row">
+                            <label for="name" class="col-md-3 col-form-label">이름</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="name" th:value="${item.name}" disabled>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <div class="form-group row">
+                            <label for="price" class="col-md-3 col-form-label">가격</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="price" th:value="${item.price+' 원'}" disabled>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <div class="form-group row">
+                            <label for="expirationDate" class="col-md-3 col-form-label">유통기한</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="expirationDate" th:value="${item.expirationDate}" disabled>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+
+
+
+                        <div class="form-group row">
+                            <label for="information" class="col-md-3 col-form-label">정보</label>
+                            <div class="col-md-8">
+                                <div  id="information" th:utext="${item.itemInformation}" >
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+                        <input type="hidden" name="itemId" th:value="${item.id}"/>
+
+
+
+                        <div class="form-group row">
+                            <div class="col-md-8 offset-md-3 d-flex align-items-center">
+                                <button type="submit" class="btn btn-primary" th:disabled="${item.stockQuantity == 0}">주문 하기</button>
+                                <div class="text-danger ml-3" th:if="${item.stockQuantity == 0}">품절</div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>
+
+

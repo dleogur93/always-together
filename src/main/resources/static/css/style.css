@@ -1,0 +1,14 @@
+/*#container {*/
+/*    max-width: 800px; !* 최대 너비 설정 *!*/
+/*    margin: 0 auto; !* 가운데 정렬을 위해 왼쪽과 오른쪽 여백을 자동으로 조절 *!*/
+/*    padding: 20px; !* 여백 추가 *!*/
+/*    border: 1px solid #ccc; !* 테두리 추가 *!*/
+/*}*/
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+

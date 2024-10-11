@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+</head>
+<body>
+<div>
+    <p>안녕하세요. <span th:text="${email}"></span>님</p>
+
+    <h2 th:text="${message}">메시지</h2>
+
+    <div>
+        <p>인증 번호를 가입 화면에 입력해주세요</p>
+    </div>
+</div>
+</body>
+</html>

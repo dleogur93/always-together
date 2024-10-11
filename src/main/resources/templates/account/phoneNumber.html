@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-2">
+      <div th:replace="~{fragments.html :: side-nav}"></div>
+    </div>
+    <div class="col-8 margin">
+      <div class="row margin">
+        <h2> 핸드폰 번호 변경</h2>
+        <hr>
+        <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+          <span th:text="${message}">메시지</span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="row margin">
+        <form class="needs-validation col-sm-6 " action="#" th:action="@{/account/phoneNumber}" th:object="${phoneNumberUpdateForm}" method="post" novalidate>
+          <div class="form-group">
+            <label for="newPhoneNumber">새 핸드폰 번호</label>
+            <input id="newPhoneNumber" type="text" th:field="*{newPhoneNumber}" class="form-control" placeholder="핸드폰번호" aria-describedby="postCodeHelp" maxlength="11" required>
+            <small id="postCodeHelp" class="form-text text-muted"> 새 핸드폰 번호를 입력하세요</small>
+            <div class="form-group">
+              <small class="form-text text-danger" th:if="${#fields.hasErrors('newPhoneNumber')}" th:errors="*{newPhoneNumber}">phoneNumber Error</small>
+            </div>
+
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">수정하기</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+  (function () {
+    'use strict';
+
+    window.addEventListener('load', function () {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+
+      // Loop over them and prevent submission
+      Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+    }, false)
+  }())
+</script>
+</html>

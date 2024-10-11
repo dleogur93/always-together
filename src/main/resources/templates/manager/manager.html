@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-2">
+                <div th:replace="~{fragments.html :: manager-side-nav}"></div>
+            </div>
+            <div class="col-8 margin">
+                <div class="row margin">
+                    <h2> 매니저 페이지 </h2>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>

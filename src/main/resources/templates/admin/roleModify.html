@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-2">
+      <div th:replace="~{fragments.html :: admin-side-nav}"></div>
+    </div>
+    <div class="col-8 margin">
+      <div class="row margin">
+        <h2> 권한 수정 </h2>
+        <hr>
+        <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+          <span th:text="${message}">메시지</span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="row margin">
+          <form>
+              <div class="form-group row">
+                  <label for="name" class="col-md-3 col-form-label">이름</label>
+                  <div class="col-md-8">
+                      <input type="text" class="form-control" id="name" th:value="${account.name}" disabled>
+                  </div>
+              </div>
+              <hr class="border-bottom">
+
+              <div class="form-group row">
+                  <label for="accountId" class="col-md-3 col-form-label">아이디</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="accountId" th:value="${account.accountId}" disabled>
+                  </div>
+              </div>
+              <hr class="border-bottom">
+
+              <div class="form-group row">
+                  <label for="accountRole" class="col-md-3 col-form-label">권한</label>
+                  <div class="col-md-8">
+                      <input type="text" class="form-control" id="accountRole" th:value="${account.role}" disabled>
+                  </div>
+              </div>
+              <hr class="border-bottom">
+          </form>
+
+        <form class="needs-validation col-sm-6 "th:action="@{'/admin/roleModify/' + ${account.accountId}}" th:object="${roleForm}" method="post" novalidate>
+          <div class="form-group row">
+            <div class="col-md-8">
+              <select class="form-select" id="role" th:field="*{role}">
+                <option th:each="role : ${T(projlee.modules.account.domain.Role).values()}"
+                        th:value="${role}" th:text="${role}" th:selected="${role == account.role}"></option>
+              </select>
+            </div>
+          </div>
+            <hr class="border-bottom">
+          <div class="form-group">
+            <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">수정하기</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>

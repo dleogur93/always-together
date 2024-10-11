@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+            <div th:replace="~{fragments.html :: reservation-side-nav}"></div>
+        </div>
+        <div class="col-8 margin">
+            <div class="row margin">
+                <h2> 상담 예약 내역 </h2>
+                <hr>
+            </div>
+
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-8 ">
+                        <div th:if="${hasReservation}">
+                            <div class="card">
+                                <div class="card-header">
+                                    예약 상세 정보
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <!-- 이름 폼 그룹 -->
+                                        <div class="form-group row">
+                                            <label for="name" class="col-md-4 col-form-label">예약자 이름</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="name" th:value="${account.name}" disabled>
+                                            </div>
+                                        </div>
+                                        <hr class="border-bottom">
+                                        <!-- 유기견 이름 폼 그룹 -->
+                                        <div class="form-group row">
+                                            <label for="dogName" class="col-md-4 col-form-label">예약 유기견 이름</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="dogName" th:value="${dog.dogName}" disabled>
+                                            </div>
+                                        </div>
+                                        <hr class="border-bottom">
+                                        <div class="form-group row">
+                                            <label for="reservationTime" class="col-md-4 col-form-label">예약 시간</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control reservationTime" id="reservationTime" th:value="${dogReservation.reservationTime}" disabled>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${!hasReservation}" class="alert alert-warning text-center mt-4">
+                            <h4 class="alert-heading">예약 내역이 없습니다.</h4>
+                            <p>현재 예약된 상담 내역이 없습니다</p>
+                            <hr>
+                            <a href="/" class="btn btn-primary">예약하러가기</a>
+                        </div>
+                        <div class="container" th:if="${hasReservation}">
+                            <form th:action="@{/account/reservationDetail/delete}" method="post">
+                                <div class="form-group mt-5">
+                                    <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">예약 취소</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!--                                <input type="hidden" name="id" th:value="${dogReservation.id}">-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!--<script th:replace="~{fragments.html :: date-time}"></script>-->
+</body>
+</html>

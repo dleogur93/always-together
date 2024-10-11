@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+  <meta charset="UTF-8">
+  <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+  <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
+  <title>PROJECT</title>
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
+  <link rel="stylesheet" href="/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="/node_modules/bootstrap-timepicker/css/bootstrap-timepicker.css">
+  <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
+  <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+  <style>
+
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .margin{
+        margin-top: 50px;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+    .sidebar {
+        /*position: fixed;*/
+        /*position: fixed;*/
+        margin-top: 100px;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 250px; /* 사이드 메뉴 바의 너비 */
+        padding: 30px;
+        background-color: #f8f9fa; /* 배경색 */
+        border-right: 1px solid #dee2e6; /* 테두리 */
+    }
+    .noti-sidebar{
+      /*position: fixed;*/
+      /*position: fixed;*/
+      margin-top: 100px;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 250px; /* 사이드 메뉴 바의 너비 */
+      padding: 30px;
+      /*background-color: #f8f9fa; !* 배경색 *!*/
+      border-right: 1px solid #dee2e6; /* 테두리 */
+    }
+
+    .centered-text {
+        text-align: center; /* 텍스트 가운데 정렬 */
+        /*margin-top: 100px; !* 상단 여백 추가 *!*/
+    }
+
+    container {
+      max-width: 100%;
+    }
+
+    body {
+      background-color: #ececee;
+      -webkit-text-size-adjust: none;
+      -moz-text-size-adjust: none;
+      -ms-text-size-adjust: none
+    }
+
+    .navbar-brand img {
+      width: 200px; /* 로고 이미지의 너비 조정 */
+      height: 200px; /* 높이 자동 조정 */
+    }
+
+    .navbar {
+      max-height: 150px; /* 네비게이션 바의 최소 높이 조정 */
+    }
+
+   .item-picture {
+     max-width: 150px;
+     max-height: 150px;
+     width: auto;
+     height: auto;
+   }
+
+  </style>
+</head>
+
+<script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">
+  $(function() {
+    var csrfToken = /*[[${_csrf.token}]]*/ null;
+    var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+    $(document).ajaxSend(function (e, xhr, options) {
+      xhr.setRequestHeader(csrfHeader, csrfToken);
+    });
+  });
+</script>
+
+<!--<nav th:fragment="main-nav" class="navbar bg-light ">-->
+<nav th:fragment="main-nav" class="navbar ">
+  <div class="container-fluid bg-light">
+    <a class="navbar-brand col-1" href="/" th:href="@{/}">
+      <img src="/images/Always_together.png" alt="Always Together Logo">
+    </a>
+
+    <div class="justify-content-center mt-10 ">
+      <a>
+        <img src="/images/maintitle.png">
+      </a>
+    </div>
+    <button class="navbar-toggler col-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+
+        <span sec:authorize="!isAuthenticated()">로그인을 해주세요 </span>
+        <span sec:authorize="isAuthenticated()" sec:authentication="name"> ACCOUNT ID</span>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="nav-link" th:href="@{/login}">로그인</a>
+          </li>
+          <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="nav-link" th:href="@{/account/sign-up}">가입</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/account/notifications}">
+              <i th:if="${!hasNotification}" class="fa fa-bell-o" aria-hidden="true"> 알림</i>
+              <span class="text-info" th:if="${hasNotification}"><i class="fa fa-bell" aria-hidden="true"> 알림</i></span>
+            </a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/account/myPage}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> 마이페이지</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/account/orderList}"><i class="fa fa-credit-card" aria-hidden="true"></i> 구매내역</a>
+          </li>
+
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/account/cart}">
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              장바구니
+            </a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{'/account/' + ${#authentication.name}+ '/reservationDetail'}"><i class="fa fa-commenting-o" aria-hidden="true"></i> 상담예약 내역 </a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()"} th:if="${#authorization.expression('hasRole(''ROLE_MANAGER'') or hasRole(''ROLE_ADMIN'')')}">
+            <a class="nav-link" th:href="@{/manager}">매니저</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()"} th:if= "${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+            <a class="nav-link" th:href="@{/admin}">관리자</a>
+          </li>
+        </ul>
+
+        <form class="form-inline mt-3"  sec:authorize="isAuthenticated()" th:action="@{/logout}"  method="post">
+          <button  type="submit">로그아웃</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+<!--<script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">-->
+<!--  $(function() {-->
+<!--    var csrfToken = [[${_csrf.token}]] ;-->
+<!--    var csrfHeader =[[${_csrf.headerName}]];-->
+<!--    $(document).ajaxSend(function (e, xhr, options) {-->
+<!--      xhr.setRequestHeader(csrfHeader, csrfToken);-->
+<!--    });-->
+<!--  });-->
+<!--</script>-->
+
+<div th:fragment="side-nav" class="sidebar centered-text">
+  <h2><a th:href="@{/account/myPage}">마이페이지</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div class="nav-item mt-2"><a  th:href="@{/account/address}">주소 변경</a></div>
+    <div class="nav-item mt-3"><a  th:href="@{/account/phoneNumber}">핸드폰번호 변경</a></div>
+    <div class="nav-item mt-3"><a  th:href="@{/account/password}">비밀번호 변경</a></div>
+    <div class="nav-item mt-3"><a  th:href="@{/account/delete}">계정 탈퇴 </a></div>
+  </nav>
+</div>
+
+<div th:fragment="account-orders-side-nav" class="sidebar centered-text">
+  <nav class="nav flex-column margin-20">
+    <div class="nav-item mt-2"><a  th:href="@{/account/orderList}">주문 내역</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/account/orderDeliveryList}">배송중 내역</a></div>
+    <div class="nav-item mt-3"><a  th:href="@{/account/orderCancelList}">주문 취소 내역</a></div>
+    <div class="nav-item mt-3"><a  th:href="@{/account/orderCompleteList}">배송 완료 내역</a></div>
+  </nav>
+</div>
+
+<div th:fragment="orders-side-nav" class="sidebar centered-text">
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div class="nav-item mt-2"><a  th:href="@{/order/accountOrders}">구매 내역</a></div>
+  </nav>
+</div>
+
+<div th:fragment="reservation-side-nav" class="sidebar centered-text">
+  <h2><a th:href="@{'/account/' + ${#authentication.name}+ '/reservationDetail'}">상담예약 내역</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+<!--    <div class="nav-item mt-2"><a  th:href="@{/account/address}">주소 변경</a></div>-->
+<!--    <div class="nav-item mt-3"><a  th:href="@{/account/phoneNumber}">핸드폰번호 변경</a></div>-->
+<!--    <div class="nav-item mt-3"><a  th:href="@{/account/password}">비밀번호 변경</a></div>-->
+<!--    <div class="nav-item mt-3"><a  th:href="@{/account/delete}">계정 탈퇴 </a></div>-->
+  </nav>
+</div>
+
+<div th:fragment="admin-side-nav" class="sidebar centered-text">
+  <h2><a th:href="@{'/admin'}">회원 관리</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div class="nav-item mt-2"><a  th:href="@{/admin/membershipManagement}">회원 목록</a></div>
+  </nav>
+</div>
+
+<div th:fragment="manager-side-nav" class="sidebar centered-text">
+  <h2><a th:href="@{'/manager'}">유기견</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div class="nav-item mt-2"><a  th:href="@{/manager/dogRegistration}">유기견 등록</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/manager/dogList}">유기견 목록</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/manager/dogAdoptionList}">입양 확정 목록</a></div>
+  </nav>
+
+  <h2 class="mt-5"><a th:href="@{'/manager'}">상담 일정</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div class="nav-item mt-2"><a  th:href="@{/manager/dogConsulting}">유기견 상담 일정</a></div>
+
+  </nav>
+
+  <h2 class="mt-5"><a th:href="@{'/manager'}">상품 등록</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div class="nav-item mt-2"><a  th:href="@{/manager/categoryRegistration}">카테고리 등록</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/manager/categoryDelete}">카테고리 삭제</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/manager/foodRegistration}">상품 등록</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/manager/itemList}">상품 목록</a></div>
+  </nav>
+
+  <h2 class="mt-5"><a th:href="@{'/manager'}">주문</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div class="nav-item mt-2"><a  th:href="@{/manager/orders}">고객 주문 목록</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/manager/orders/deliveryList}">고객 배송중 목록</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/manager/orders/cancelList}">고객 주문 취소 목록</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/manager/orders/completeList}">고객 배송 완료 목록</a></div>
+
+  </nav>
+
+  <h2 class="mt-5"><a th:href="@{'/manager'}">배너 등록</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div class="nav-item mt-2"><a  th:href="@{/manager/banner}">배너 등록</a></div>
+    <div class="nav-item mt-2"><a  th:href="@{/manager/bannerUpdate}">배너 수정</a></div>
+
+  </nav>
+</div>
+
+<div th:fragment="banner" class="row" id="banner">
+  <img th:if="${banner.bannerImage != null}" th:src="${banner.bannerImage}"
+       width="640" alt="name" th:alt="${banner.bannerName}"/>
+</div>
+
+<div th:fragment="item-main-side-nav" class="sidebar centered-text">
+  <h2><a th:href="@{'/item/mainList'}">카테고리</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div th:each="category : ${categories}">
+      <div class="nav-item mt-2"><a th:href="@{'/category/' + ${category.id}}" th:text="${category.name}"></a></div>
+    </div>
+  </nav>
+</div>
+
+<div th:fragment="dog-main-side-nav" class="sidebar centered-text">
+  <h2><a th:href="@{'/dog/mainList'}">품종</a></h2>
+  <hr>
+  <nav class="nav flex-column margin-20">
+    <div th:each="dog : ${dogs}">
+      <div class="nav-item mt-2">
+        <a
+                th:href="@{'/dog/' + ${dog.dogBreed}}"
+                th:text="${dog.dogBreed}"></a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!--<div th:fragment="date-time">-->
+<!--  <script src="/node_modules/dayjs/dayjs.min.js"></script>-->
+<!--  <script type="text/javascript">-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--      // Day.js를 사용하여 날짜 및 시간 형식화-->
+<!--      var reservationTimeElement = document.getElementById('reservationTime');-->
+
+<!--      var reservationTime = reservationTimeElement.value;-->
+<!--      var formattedReservationTime = dayjs(reservationTime).format('YYYY년 MM월 DD일 A hh시 mm분');-->
+
+<!--      formattedReservationTime = formattedReservationTime.replace('AM', '오전').replace('PM', '오후');-->
+
+<!--      reservationTimeElement.value = formattedReservationTime;-->
+
+
+<!--      // if (reservationTimeElement && reservationTimeElement.value) {-->
+<!--      //   var reservationTime = reservationTimeElement.value;-->
+<!--      //   var formattedReservationTime = dayjs(reservationTime).format('YYYY년 MM월 DD일 A hh시 mm분');-->
+<!--      //-->
+<!--      //   formattedReservationTime = formattedReservationTime.replace('AM', '오전').replace('PM', '오후');-->
+<!--      //-->
+<!--      //   reservationTimeElement.value = formattedReservationTime;-->
+<!--      // } else {-->
+<!--      //   console.error("예약 시간 요소를 찾을 수 없거나 값이 없습니다.");-->
+<!--      // }-->
+<!--    });-->
+<!--  </script>-->
+<!--</div>-->
+
+<ul th:fragment="notification-list (notifications)" class="list-group list-group-flush">
+  <a th:href="@{/account/orderDeliveryList}"  th:each="noti: ${notifications}"
+     class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+      <small class="text-muted" th:text="${noti.title}">Noti title</small>
+      <small class="fromNow text-muted createdDateTime"  th:text="${noti.createdDateTime}">3 days ago</small>
+    </div>
+    <p th:text="${noti.message}" class="text-left mb-0 mt-1">message</p>
+  </a>
+</ul>
+
+<div th:fragment="reservation-date-time">
+  <script src="/node_modules/dayjs/dayjs.min.js"></script>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      // 모든 reservationTime 요소를 선택
+      var reservationTimeElements = document.querySelectorAll('.reservationTime');
+      reservationTimeElements.forEach(function(element) {
+        // 요소의 텍스트를 가져와서 Day.js를 사용해 포맷
+        var reservationTime = element.textContent;
+        var formattedReservationTime = dayjs(reservationTime).format('YYYY년 MM월 DD일 A hh시 mm분');
+        formattedReservationTime = formattedReservationTime.replace('AM', '오전').replace('PM', '오후');
+
+        // 포맷된 텍스트를 요소의 텍스트로 설정
+        element.textContent = formattedReservationTime;
+      });
+    });
+  </script>
+</div>
+
+<div th:fragment="create-date-time">
+  <script src="/node_modules/dayjs/dayjs.min.js"></script>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      // Day.js를 사용하여 날짜 및 시간 형식화
+      var createdAtElement = document.getElementById('createdAt');
+      var createdAt = createdAtElement.value;
+      var formattedReservationTime = dayjs(createdAt).format('YYYY년 MM월 DD일 A hh시 mm분');
+
+      formattedReservationTime = formattedReservationTime.replace('AM', '오전').replace('PM', '오후');
+
+      createdAtElement.value = formattedReservationTime;
+    });
+  </script>
+</div>
+<div th:fragment="date-time">
+  <script src="/node_modules/dayjs/dayjs.min.js"></script>
+  <script type="text/javascript">
+    var createdAtElements = document.querySelectorAll('.createdAt');
+    createdAtElements.forEach(function(createdAtElement) {
+      var createdAt = createdAtElement.innerText;
+      var formattedReservationTime = dayjs(createdAt).format('YYYY년 MM월 DD일 A hh시 mm분');
+      formattedReservationTime = formattedReservationTime.replace('AM', '오전').replace('PM', '오후');
+      createdAtElement.innerText = formattedReservationTime;
+    });
+  </script>
+</div>
+
+</html>

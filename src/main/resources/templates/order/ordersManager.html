@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}">
+</head>
+<style>
+    .btn-container {
+        flex-direction: column;
+    }
+    .btn-space {
+        margin-bottom: 10px; /* 버튼 사이의 간격을 조정할 수 있습니다 */
+    }
+</style>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+            <div th:replace="~{fragments.html :: manager-side-nav}"></div>
+        </div>
+        <div class="col-8 margin">
+            <div class="row margin">
+                <h2> 고객 구매 내역 </h2>
+                <hr>
+            </div>
+<!--            <div class="dropdown">-->
+<!--                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                    정렬 방식-->
+<!--                </button>-->
+<!--                <ul class="dropdown-menu">-->
+<!--                    <li>-->
+<!--                        <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'orderDateTime') and #strings.equals(sortDirection, 'desc')} ? 'active'" th:href="@{'/manager/orders?sort=orderDateTime,desc'}">날짜 (내림차순)</a>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'orderDateTime') and #strings.equals(sortDirection, 'asc')} ? 'active'" th:href="@{'/manager/orders?sort=orderDateTime,asc'}">날짜 (오름차순)</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+
+            <div>
+                <form th:object="${orderSearch}" class="row">
+                    <div class="form-group col-3">
+                        <label for="accountName" class="sr-only">회원명</label>
+                        <input type="text" id="accountName" th:field="*{accountName}" class="form-control" placeholder="회원명"/>
+                    </div>
+                    <div class="form-group  col-3">
+                        <label for="orderStatus" class="sr-only">주문상태</label>
+                        <select id="orderStatus" th:field="*{orderStatus}" class="form-control">
+                            <option value="">주문상태</option>
+                            <option th:each="status : ${T(projlee.modules.order.domain.OrderStatus).values()}"
+                                    th:value="${status}"
+                                    th:text="${status}">option
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-3">
+                        <button type="submit" class="btn btn-primary mb-2 col-3">검색</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="card mt-3" th:each="order : ${orders}">
+                        <h5 class="card-header" th:text="${order.account.name}" >accountName</h5>
+                        <div class="card-body">
+                            <div class="col row" th:each="orderItem : ${order.orderItems}">
+                                <h5 class="card-title col-3">
+                                    <img th:src="${orderItem.item.itemPicture}" alt="Item Picture" class="item-picture" />
+                                </h5>
+                                <div class="col-1">
+                                    <div class="mt-3">
+                                        <strong>상품명 </strong>
+                                    </div>
+                                    <div class="mt-2">
+                                        <strong>수량 </strong>
+                                    </div>
+                                    <div class="mt-2">
+                                        <strong>가격 </strong>
+                                    </div>
+                                    <div class="mt-2">
+                                        <strong>주문 날짜 </strong>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="mt-3">
+                                        <span th:text="${orderItem.item.name}"></span>
+                                    </div>
+                                    <div class="mt-2">
+                                       <span th:text="${orderItem.getCount()} + 개"></span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <span th:text="${orderItem.getTotalPrice()} + 원"></span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <span class="createdAt" th:text="${order.getOrderDateTime()} "></span>
+                                    </div>
+                                </div>
+                                <hr>
+                                </div>
+                            <div class="col-2 d-flex align-items-center justify-content-center btn-container ">
+                                <a th:if="${order.getStatus().name() == 'ORDER' and order.getDelivery().status == null}"  th:href="'javascript:cancel('+${order.id}+')'"
+                                   class="btn btn-danger btn-space" id="'cancelButton_' + ${order.id}">주문취소</a>
+                                <a th:if="${order.getDelivery().status == null and order.getStatus().name() != 'CANCEL'}"  th:href="'javascript:ready('+${order.id}+')'"
+                                   class="btn btn-primary">배송준비완료</a>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-5">
+                <div class="col-sm-10">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${!orders.hasPrevious()}? disabled">
+                                <a th:href="@{'/manager/orders?page=' + ${orders.getNumber() - 1}}"
+                                   class="page-link" tabindex="-1" aria-disabled="true">
+                                    이전
+                                </a>
+                            </li>
+                            <li class="page-item" th:classappend="${i == orders.getNumber()}? active"
+                                th:each="i: ${#numbers.sequence(0, orders.getTotalPages()  > 0 ? orders.getTotalPages() - 1 : 0)}">
+                                <a th:href="@{'/manager/orders?page=' + ${i}}"
+                                   class="page-link" href="#" th:text="${i + 1}">1</a>
+                            </li>
+                            <li class="page-item" th:classappend="${!orders.hasNext()}? disabled">
+                                <a th:href="@{'/manager/orders?page=' + ${orders.getNumber() - 1}}"
+                                   class="page-link">
+                                    다음
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="/node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script th:replace="~{fragments.html :: date-time}"></script>
+<script>
+
+   function cancel(id) {
+       var form = document.createElement("form");
+       form.setAttribute("method", "post");
+       form.setAttribute("action", "/manager/orders/" + id + "/cancel");
+
+       var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+       var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+       var csrfInput = document.createElement("input");
+       csrfInput.setAttribute("type", "hidden");
+       csrfInput.setAttribute("name", "_csrf");  // CSRF 헤더 이름을 input의 name으로 설정
+       csrfInput.setAttribute("value", csrfToken);  // CSRF 토큰 값을 input의 value로 설정
+
+       // 폼에 CSRF input 추가
+       form.appendChild(csrfInput);
+
+       document.body.appendChild(form);
+       form.submit();
+   }
+
+   function ready(id) {
+       var form = document.createElement("form");
+       form.setAttribute("method", "post");
+       form.setAttribute("action", "/manager/orders/" + id + "/ready");
+
+       var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+       var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+       var csrfInput = document.createElement("input");
+       csrfInput.setAttribute("type", "hidden");
+       csrfInput.setAttribute("name", "_csrf");  // CSRF 헤더 이름을 input의 name으로 설정
+       csrfInput.setAttribute("value", csrfToken);  // CSRF 토큰 값을 input의 value로 설정
+
+       form.appendChild(csrfInput);
+
+       document.body.appendChild(form);
+       form.submit();
+
+       var cancelButton = document.getElementById('cancelButton_' + id);
+       if (cancelButton) {
+           cancelButton.remove();
+       }
+   }
+
+
+</script>
+</html>

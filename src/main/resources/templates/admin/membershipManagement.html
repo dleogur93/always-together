@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<style>
+    .rounded-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 10px; /* 전체 테이블의 모서리 */
+        overflow: hidden; /* 둥근 모서리를 위해 필요 */
+    }
+
+    .rounded-table thead tr:first-child th:first-child {
+        border-top-left-radius: 10px; /* 첫 번째 셀의 왼쪽 상단 모서리 */
+    }
+
+    .rounded-table thead tr:first-child th:last-child {
+        border-top-right-radius: 10px; /* 마지막 셀의 오른쪽 상단 모서리 */
+    }
+
+    .rounded-table tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 10px; /* 첫 번째 셀의 왼쪽 하단 모서리 */
+    }
+
+    .rounded-table tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 10px; /* 마지막 셀의 오른쪽 하단 모서리 */
+    }
+
+</style>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+            <div th:replace="~{fragments.html :: admin-side-nav}"></div>
+        </div>
+        <div class="col-8 margin">
+            <div class="row margin">
+                <h2> 회원 목록 </h2>
+                <hr>
+            </div>
+
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    정렬 방식
+                </button>
+
+                <ul class="dropdown-menu" >
+                    <li>
+                        <a class="dropdown-item"  th:classappend="${#strings.equals(sortProperty,'id')and #strings.equals(sortDirection,'desc')}? active"
+                           th:href="@{'/admin/membershipManagement?sort=id,desc'}">회원번호</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty,'name')and #strings.equals(sortDirection,'desc')}? active"
+                           th:href="@{'/admin/membershipManagement?sort=name,desc'}">이름(내림차순)</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty,'name')and #strings.equals(sortDirection,'asc')}? active"
+                           th:href="@{'/admin/membershipManagement?sort=name,asc'}">이름(오름차순) </a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div>
+                <form class="d-flex mt-3" role="search" th:action="@{/admin/membershipManagement}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="accountId">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+
+            <table class="table rounded-table margin">
+                <thead>
+                <tr class="table-info">
+                    <th scope="col">이름</th>
+                    <th scope="col">아이디</th>
+                    <th scope="col">이메일</th>
+                    <th scope="col">권한</th>
+                </tr>
+                </thead>
+                <tbody >
+                <tr class="link_btn hover" th:each="account:${accounts.getContent()}">
+                    <td style="text-align: left;">
+                        <h6  th:text="${account.name}">이메일</h6>
+                    </td>
+                    <td style="text-align: left;">
+                        <a th:href="@{'/admin/memberInformation/' + ${account.accountId}}" >
+                            <h6 th:text="${account.accountId}">아이디</h6>
+                        </a>
+                    </td>
+                    <td style="text-align: left;">
+                        <h6  th:text="${account.email}">이메일</h6>
+                    </td>
+                    <td style="text-align: left;">
+                        <a th:href="@{'/admin/roleModify/' + ${account.accountId}}" >
+                            <h6 th:text="${account.role}">권한</h6>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-10">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${!accounts.hasPrevious()}? disabled">
+                            <a th:href="@{'/admin/membershipManagement?sort=' + ${sortProperty} + ',desc&page=' + ${accounts.getNumber() - 1}}"
+                               class="page-link" tabindex="-1" aria-disabled="true">
+                                이전
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${i == accounts.getNumber()}? active"
+                            th:each="i: ${#numbers.sequence(0, accounts.getTotalPages() - 1)}">
+                            <a th:href="@{'/admin/membershipManagement?sort=' + ${sortProperty} + ',desc&page=' + ${i}}"
+                               class="page-link" href="#" th:text="${i + 1}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${!accounts.hasNext()}? disabled">
+                            <a th:href="@{'/admin/membershipManagement?sort=' + ${sortProperty} + ',desc&page=' + ${accounts.getNumber() - 1}}"
+                               class="page-link">
+                                다음
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>

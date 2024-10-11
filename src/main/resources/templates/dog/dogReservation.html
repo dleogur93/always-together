@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html  lang="en"
+       xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+
+<div th:replace="~{fragments.html :: main-nav}"></div>
+
+
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 100px;">
+    <div class="row justify-content-center w-100">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="row margin">
+                <h2>유기견 방문 상담 예약</h2>
+                <hr>
+            </div>
+
+            <div class="container mt-5">
+                <div class="col-md-5 mx-auto">
+                    <form>
+                        <div class="form-group row">
+                            <svg th:if="${#strings.isEmpty(dog.dogPicture)}" class="rounded"
+                                 th:data-jdenticon-value="${dog.dogName}" width="500" height="500"></svg>
+
+                            <img th:if="${!#strings.isEmpty(dog.dogPicture)}" class="rounded"
+                                 th:src="${dog.dogPicture}"
+                                 width="500" height="500" alt="name" th:alt="${dog.dogName}"/>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <div class="form-group row">
+                            <label for="dogName" class="col-md-3 col-form-label">유기견 이름</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="dogName" th:value="${dog.dogName}" disabled>
+                            </div>
+                        </div>
+                        <hr class="border-bottom">
+
+                        <div class="form-group row">
+                            <label for="accountName" class="col-md-3 col-form-label">방문자 성함</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="accountName" th:value="${account.name}" disabled>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr class="border-bottom">
+                    <form th:action="@{/reservation/dog}" th:object="${dogReservationForm}" method="post">
+                        <input type="hidden" name="accountId" th:value="${account.id}">
+                        <input type="hidden" name="dogId" th:value="${dog.id}">
+
+                        <div class="form-group mt-2">
+                            <label for="reservationDate">예약 날짜</label>
+                            <input id="reservationDate" name="reservationDate" type="text" class="form-control datepicker" placeholder="예약 날짜" required>
+                            <small id="reservationDateHelp">날짜 입력</small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('reservationDate')}" th:errors="*{reservationDate}">Invalid date</small>
+                        </div>
+                        <hr class="border-bottom">
+                        <div class="form-group mt-2">
+                            <label for="reservationTime">예약 시간</label>
+                            <select id="reservationTime" name="reservationTime" class="form-control" required>
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                            </select>
+                            <small id="reservationTimeHelp">시간 입력</small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('reservationTime')}" th:errors="*{reservationTime}">Invalid time</small>
+                        </div>
+                        <div class="form-group mt-5">
+                            <button th:if="${!account.accountDogReservation}" class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp" >예약하기</button>
+                            <button th:if="${account.accountDogReservation}" class="btn btn-secondary btn-lg" type="submit" aria-describedby="submitHelp" disabled>이미 예약 정보가 있습니다.</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+
+
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="/node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script>
+
+    (function () {
+        'use strict';
+
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+
+            // Loop over them and prevent submission
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        }, false)
+    }())
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+</script>
+<script>
+    $(function() {
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            daysOfWeekDisabled: '0' ,// 일요일 비활성화
+            startDate: new Date()
+        });
+
+        $('.timepicker').timepicker({
+            showMeridian: false,
+            defaultTime: false
+        });
+    });
+</script>
+</body>
+</html>

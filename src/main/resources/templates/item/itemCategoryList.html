@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container mt-3" style="padding-top: 100px;">
+    <div class="row">
+        <div class="col-2">
+            <div th:replace="~{fragments.html :: item-main-side-nav}"></div>
+        </div>
+        <div class="col-8">
+            <div>
+                <form class="d-flex mt-3" role="search" th:action="@{'/category/' + ${category.id}}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="검색" aria-label="Search" name="itemName">
+                    <button class="btn btn-outline-success" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="row justify-content-center pt-3">
+                <div th:replace="~{fragments.html :: banner}"></div>
+            </div>
+            <hr>
+            <div class="dropdown mt-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    정렬 방식
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'price')}"
+                           th:href="@{'/category/' + ${category.id} + '?sort=price&direction=desc'}">가격 눂은순</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'price')}"
+                           th:href="@{'/category/' + ${category.id} + '?sort=price&direction=asc'}">가격 낮은술</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'registrationDate')}"
+                           th:href="@{'/category/' + ${category.id} + '?sort=registrationDate&direction=' + ${direction}}">등록일</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 상품 목록 출력 -->
+            <div class="row justify-content-center pt-3 mt-5">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-md-2" th:each="item: ${items}">
+                            <div class="card mb-4 shadow-sm">
+                                <img th:src="@{${item.itemPicture}}" class="card-img-top" th:alt="${item.name}">
+                                <div class="card-body">
+                                    <a th:href="@{'/item/description/' + ${item.id}}" class="text-decoration-none">
+                                        <h5 class="card-title context" th:text="${item.name}"></h5>
+                                    </a>
+                                    <p class="card-text" th:text="${item.price} + '원'">가격</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+
+            <!-- 페이지 네이션 -->
+            <div class="row justify-content-center">
+                <div class="col-sm-10">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${!items.hasPrevious()}? disabled">
+                                <a th:href="@{'/category/' + ${category.id} + '?sort=' + ${sortProperty} + '&direction=' + ${direction} + '&page=' + ${items.number - 1}}"
+                                   class="page-link" tabindex="-1" aria-disabled="true">
+                                    이전
+                                </a>
+                            </li>
+                            <li class="page-item" th:classappend="${page == items.number}? active"
+                                th:each="page: ${#numbers.sequence(0, items.totalPages> 0 ? items.getTotalPages() - 1 : 0)}">
+                                <a th:href="@{'/category/' + ${category.id} + '?sort=' + ${sortProperty} + '&direction=' + ${direction} + '&page=' + ${page}}"
+                                   class="page-link" th:text="${page + 1}">1</a>
+                            </li>
+                            <li class="page-item" th:classappend="${!items.hasNext()}? disabled">
+                                <a th:href="@{'/category/' + ${category.id} + '?sort=' + ${sortProperty} + '&direction=' + ${direction} + '&page=' + ${items.number + 1}}"
+                                   class="page-link">
+                                    다음
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

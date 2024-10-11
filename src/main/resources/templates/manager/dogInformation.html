@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+            <div th:replace="~{fragments.html :: manager-side-nav}"></div>
+        </div>
+        <div class="col-8 margin">
+            <div class="row margin">
+                <h2> 유기견 상세 정보 </h2>
+                <hr>
+            </div>
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-6 ">
+                        <form>
+                            <!-- 이름 폼 그룹 -->
+                            <div class="form-group row">
+                                <label for="name" class="col-md-3 col-form-label">이름</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="name" th:value="${dog.dogName}" disabled>
+                                </div>
+                            </div>
+                            <hr class="border-bottom">
+                            <!-- 아이디 폼 그룹 -->
+                            <div class="form-group row">
+                                <label for="dogBreed" class="col-md-3 col-form-label">품종</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="dogBreed" th:value="${dog.dogBreed}" disabled>
+                                </div>
+                            </div>
+                            <hr class="border-bottom">
+
+                            <div class="form-group row">
+                                <label for="dogAge" class="col-md-3 col-form-label">나이</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="dogAge" th:value="${dog.dogAge}" disabled>
+                                </div>
+                            </div>
+                            <hr class="border-bottom">
+
+                            <div class="form-group row">
+                                <label for="dogSex" class="col-md-3 col-form-label">성별</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="dogSex" th:value="${dog.dogSex == 'MALE' ? '수컷' : '암컷'}" disabled>
+                                </div>
+                            </div>
+                            <hr class="border-bottom">
+
+                            <div class="form-group row">
+                                <label for="dogRegistrationDate" class="col-md-3 col-form-label">등록 날짜</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="dogRegistrationDate" th:value="${dog.dogRegistrationDate}" disabled>
+                                </div>
+                            </div>
+                            <hr class="border-bottom">
+
+                            <div class="form-group row">
+                                <svg th:if="${#strings.isEmpty(dog.dogPicture)}" class="rounded"
+                                     th:data-jdenticon-value="${dog.dogName}" width="500" height="500"></svg>
+
+                                <img th:if="${!#strings.isEmpty(dog.dogPicture)}" class="rounded"
+                                     th:src="${dog.dogPicture}"
+                                     width="500" height="500" alt="name" th:alt="${dog.dogName}"/>
+                            </div>
+                            <hr class="border-bottom">
+
+                            <div class="form-group row">
+                                <label for="information" class="col-md-3 col-form-label">정보</label>
+                                <div class="col-md-8">
+                                    <div  class="form-control" id="information" th:utext="${dog.information}" >
+                                </div>
+                            </div>
+
+                            <hr class="border-bottom">
+                            <div class="form-group col-sm-6">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-8">
+                                    <a th:href="@{/manager/dogModify/{id}(id=${dog.id})}" class="btn btn-primary">수정</a>
+                                </div>
+                            </div>
+                            </div>
+                        </form>
+
+                        <form class="needs-validation col-sm-6 " action="#" th:action="@{/manager/dogDelete}"  method="post" novalidate>
+                            <input type="hidden" name="id" th:value="${dog.id}">
+                            <div class="form-group mt-5">
+                                <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">정보 삭제</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>

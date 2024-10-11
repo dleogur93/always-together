@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments.html :: head}"></head>
+<style>
+    .margin-bottom-200 {
+        margin-bottom: 200px;
+    }
+</style>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 100px;">
+    <div class="row justify-content-center w-100">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="row margin">
+                <h2>장바구니 주문</h2>
+                <hr>
+            </div>
+
+            <div class="container mt-5">
+                <div class="col-md-12 mx-auto">
+                    <form th:action="@{/account/cart/order}" method="post">
+                        <!-- 아이템 목록 -->
+                        <div th:each="cartItem : ${cart.cartItems}">
+                            <div class="form-group row">
+                                <svg th:if="${#strings.isEmpty(cartItem.item.itemPicture)}" class="rounded"
+                                     th:data-jdenticon-value="${cartItem.item.name}" width="100" height="100"></svg>
+                                <img th:if="${!#strings.isEmpty(cartItem.item.itemPicture)}" class="rounded"
+                                     th:src="${cartItem.item.itemPicture}" width="100" height="100" alt="name" th:alt="${cartItem.item.name}"/>
+                                <div class="col-md-8">
+                                    <p th:text="${cartItem.item.name}"></p>
+                                    <p>수량: <span th:text="${cartItem.count}"></span></p>
+                                </div>
+                            </div>
+                            <hr class="border-bottom">
+                        </div>
+
+                        <!-- 배송 주소 폼 그룹 -->
+                        <div class="form-group row">
+                            <label for="address" class="col-md-3 col-form-label">배송 주소</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="address" th:value="${account.address.getAddress()}" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="detailAddress" class="col-md-3 col-form-label"></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="detailAddress" th:value="${account.address.getDetailAddress()}" required>
+                            </div>
+                        </div>
+
+                        <hr class="border-bottom">
+
+                        <div class="form-group row margin-bottom-200">
+                            <div class="col-md-8 offset-md-3 mt-3">
+                                <button type="submit" class="btn btn-primary">결제하기</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>

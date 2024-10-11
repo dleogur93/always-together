@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments.html :: head}"></head>
+<body>
+<div th:replace="~{fragments.html :: main-nav}"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-2">
+      <div th:replace="~{fragments.html :: admin-side-nav}"></div>
+    </div>
+    <div class="col-8 margin">
+      <div class="row margin">
+        <h2> 회원 상세 정보 </h2>
+        <hr>
+      </div>
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-md-6 ">
+            <form>
+              <!-- 이름 폼 그룹 -->
+              <div class="form-group row">
+                <label for="name" class="col-md-3 col-form-label">이름</label>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="name" th:value="${account.name}" disabled>
+                </div>
+              </div>
+              <hr class="border-bottom">
+              <!-- 아이디 폼 그룹 -->
+              <div class="form-group row">
+                <label for="accountId" class="col-md-3 col-form-label">아이디</label>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="accountId" th:value="${account.accountId}" disabled>
+                </div>
+              </div>
+              <hr class="border-bottom">
+              <!-- 이메일 폼 그룹 -->
+              <div class="form-group row">
+                <label for="email" class="col-md-3 col-form-label">이메일</label>
+                <div class="col-md-8">
+                  <input type="email" class="form-control" id="email" th:value="${account.email}" disabled>
+                </div>
+              </div>
+              <hr class="border-bottom">
+              <!-- 핸드폰 폼 그룹 -->
+              <div class="form-group row">
+                <label for="phoneNumber" class="col-md-3 col-form-label">핸드폰</label>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="phoneNumber" th:value="${account.phoneNumber}" disabled>
+                </div>
+              </div>
+              <hr class="border-bottom">
+              <!-- 우편번호 폼 그룹 -->
+              <div class="form-group row">
+                <label for="postcode" class="col-md-3 col-form-label">우편번호</label>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="postcode" th:value="${account.address.postcode}" disabled>
+                </div>
+              </div>
+              <hr class="border-bottom">
+              <!-- 주소 폼 그룹 -->
+              <div class="form-group row">
+                <label for="address" class="col-md-3 col-form-label">주소</label>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="address" th:value="${account.address.address}" disabled>
+                </div>
+              </div>
+              <hr class="border-bottom">
+              <!-- 상세주소 폼 그룹 -->
+              <div class="form-group row">
+                <label for="detailAddress" class="col-md-3 col-form-label">상세주소</label>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="detailAddress" th:value="${account.address.detailAddress}" disabled>
+                </div>
+              </div>
+              <hr class="border-bottom">
+              <!-- 가입날짜 폼 그룹 -->
+              <div class="form-group row">
+                <label for="createdAt" class="col-md-3 col-form-label">가입날짜</label>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="createdAt" th:value="${account.createdAt}" disabled>
+                </div>
+              </div>
+              <hr class="border-bottom">
+              <!-- 권한 폼 그룸 -->
+              <div class="form-group row">
+                <label for="role" class="col-md-3 col-form-label">권한</label>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="role" th:value="${account.role}" disabled>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>
