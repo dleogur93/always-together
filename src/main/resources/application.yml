@@ -43,3 +43,45 @@ logging.level:
   org.hibernate.SQL: debug
 #  org.hibernate.type: trace
 
+
+---
+
+server:
+  max-http-request-header-size: 10MB
+
+spring:
+  profiles:
+    active: dev
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dleogur93@gmail.com
+    password: hfnlhevxqwwqpszc
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+
+
+  datasource:
+    url: jdbc:mysql://together-mysql-database.c7qa44s8st9x.ap-northeast-2.rds.amazonaws.com/together-mysql-database
+    username: admin
+    password: Ss121101$$
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace
+
