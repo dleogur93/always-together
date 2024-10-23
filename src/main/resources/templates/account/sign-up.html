@@ -70,7 +70,7 @@
                 <div class="col-md-12 ">
                     <label for="email" class="form-label">이메일</label>
                     <input type="email" class="form-control" id="email" name="email"  th:field="*{email}" required>
-                    <button id="checkEmail" type="button" onclick="checkEmail()">Check Email</button>
+                    <button id="checkEmail" type="button" >Check Email</button>
                     <p th:if="${error}" th:text="${error}" style="color: red;"></p>
 
                     <hr>
