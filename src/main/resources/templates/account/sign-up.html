@@ -76,7 +76,7 @@
                     <hr>
                     <label for="code" class="form-label" >인증코드</label>
                     <input type="text" class="form-control" id="code" name="code" th:field="*{code}" required>
-                    <button id="sendVerificationCode" type="button" onclick="sendVerificationCode()">Send Verification Code</button>
+                    <button id="sendVerificationCode" type="button" >Send Verification Code</button>
                     <p th:if="${error}" th:text="${error}" style="color: red;"></p>
 
 
