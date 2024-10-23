@@ -86,7 +86,7 @@
 
         </div>
     </div>
-
+</body>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
@@ -163,53 +163,107 @@
     }())
 
     ////////////////////////////////////
+    document.addEventListener('DOMContentLoaded', function() {
+        var emailChecked = false;
 
-    var emailChecked = false; // 이메일 중복 확인 여부를 저장하는 변수 추가
-
-    function checkEmail() {
-        var email = document.getElementById('email').value;
-        if (!email) {
-            alert('이메일 주소를 입력해주세요');
-            return;
-        }
-
-        if (!isValidEmail(email)) {
-            alert('올바른 이메일 주소 형식이 아닙니다.');
-            return;
-        }
-
-        // Ajax request to check email uniqueness
-        $.post("/checkEmail", { email: email }, function (data) {
-
-            if (data === 'OK') {
-                alert('이메일 사용 가능합니다.');
-                $('#signupForm').prop('disabled', false);
-                emailChecked = true;
-            } else {
-                alert('입력하신 이메일을 사용 할 수 없습니다.');
-                $('#signupForm').prop('disabled', true);
-                emailChecked = false;
+        function checkEmail() {
+            var email = document.getElementById('email').value;
+            if (!email) {
+                alert('이메일 주소를 입력해주세요');
+                return;
             }
-        });
-    }
 
-//////////////////////////////////////////////////////
+            if (!isValidEmail(email)) {
+                alert('올바른 이메일 주소 형식이 아닙니다.');
+                return;
+            }
 
+            // Ajax request to check email uniqueness
+            $.post("/checkEmail", { email: email }, function (data) {
+                if (data === 'OK') {
+                    alert('이메일 사용 가능합니다.');
+                    $('#signupForm').prop('disabled', false);
+                    emailChecked = true;
+                } else {
+                    alert('입력하신 이메일을 사용 할 수 없습니다.');
+                    $('#signupForm').prop('disabled', true);
+                    emailChecked = false;
+                }
+            });
+        }
 
-    // Check Email 버튼 클릭 이벤트 핸들러
-    document.getElementById('checkEmail').addEventListener('click', function() {
-        checkEmail();
+        function sendVerificationCode() {
+            if (!emailChecked) {
+                alert('이메일을 먼저 확인해주세요.');
+                return;
+            }
+
+            var email = document.getElementById('email').value;
+            if (!email) {
+                alert('Please enter an email address.');
+                return;
+            }
+
+            // Ajax request to send verification code
+            $.post("/sendVerificationCode", { email: email }, function (data) {
+                alert(data);
+            });
+        }
+
+        document.getElementById('checkEmail').addEventListener('click', checkEmail);
+        document.getElementById('sendVerificationCode').addEventListener('click', sendVerificationCode);
+
+        function isValidEmail(email) {
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
     });
-
-    // Send Verification Code 버튼 클릭 이벤트 핸들러
-    document.getElementById('sendVerificationCode').addEventListener('click', function() {
-        sendVerificationCode();
-    });
-///////////////////////////
-    function isValidEmail(email) {
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailPattern.test(email);
-    }
+//     var emailChecked = false; // 이메일 중복 확인 여부를 저장하는 변수 추가
+//
+//     function checkEmail() {
+//         var email = document.getElementById('email').value;
+//         if (!email) {
+//             alert('이메일 주소를 입력해주세요');
+//             return;
+//         }
+//
+//         if (!isValidEmail(email)) {
+//             alert('올바른 이메일 주소 형식이 아닙니다.');
+//             return;
+//         }
+//
+//         // Ajax request to check email uniqueness
+//         $.post("/checkEmail", { email: email }, function (data) {
+//
+//             if (data === 'OK') {
+//                 alert('이메일 사용 가능합니다.');
+//                 $('#signupForm').prop('disabled', false);
+//                 emailChecked = true;
+//             } else {
+//                 alert('입력하신 이메일을 사용 할 수 없습니다.');
+//                 $('#signupForm').prop('disabled', true);
+//                 emailChecked = false;
+//             }
+//         });
+//     }
+//
+// //////////////////////////////////////////////////////
+//
+//
+//     // Check Email 버튼 클릭 이벤트 핸들러
+//     document.getElementById('checkEmail').addEventListener('click', function() {
+//         checkEmail();
+//     });
+//
+//     // Send Verification Code 버튼 클릭 이벤트 핸들러
+//     document.getElementById('sendVerificationCode').addEventListener('click', function() {
+//         sendVerificationCode();
+//     });
+// ///////////////////////////
+//     function isValidEmail(email) {
+//         var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//         return emailPattern.test(email);
+//     }
 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -235,8 +289,5 @@
     }
 
 </script>
-</body>
-<script>
 
-</script>
 </html>
