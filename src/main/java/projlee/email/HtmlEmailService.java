@@ -12,7 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Profile("dev")
+@Profile("devg")
 @Component
 @RequiredArgsConstructor
 public class HtmlEmailService implements EmailService{
