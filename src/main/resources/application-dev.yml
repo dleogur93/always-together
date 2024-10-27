@@ -1,6 +1,8 @@
 server:
   max-http-request-header-size: 10MB
 
+spring:
+
   mail:
     host: smtp.gmail.com
     port: 587
