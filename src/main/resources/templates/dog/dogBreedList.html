@@ -9,6 +9,7 @@
         <div class="col-2">
             <div th:replace="~{fragments.html :: dog-main-side-nav}"></div>
         </div>
+        <div class="col-2"></div>
         <div class="col-8">
 
             <div class="row justify-content-center pt-3">
@@ -23,6 +24,8 @@
                     <div class="row">
                         <div class="col-md-2" th:each="dogsBreed: ${dogsBreed}">
                             <div class="card mb-4 shadow-sm">
+                                <svg th:if="${#strings.isEmpty(dogsBreed.dogPicture)}" class="rounded"
+                                     th:data-jdenticon-value="${dogsBreed.dogName}" width="123" height="123"></svg>
                                 <img th:src="${dogsBreed.dogPicture}" class="card-img-top" th:alt="${dogsBreed.dogName}">
                                 <div class="card-body">
                                     <a th:href="@{'/dog/description/' + ${dogsBreed.id}}" class="text-decoration-none">

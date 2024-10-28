@@ -9,6 +9,7 @@
         <div class="col-2">
             <div th:replace="~{fragments.html :: item-main-side-nav}"></div>
         </div>
+        <div class="col-2"></div>
         <div class="col-8">
             <div>
                 <form class="d-flex mt-3" role="search" th:action="@{'/category/' + ${category.id}}" method="get">
