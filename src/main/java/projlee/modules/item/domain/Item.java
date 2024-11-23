@@ -3,6 +3,7 @@ package projlee.modules.item.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 import projlee.exception.NotEnoughStockException;
 import projlee.modules.item.form.ItemModifyForm;
 
@@ -36,6 +37,7 @@ public abstract class Item {
     @Column(columnDefinition = "LONGTEXT")
     private String itemInformation;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime registrationDate;
 
     @ManyToMany(mappedBy = "items")
