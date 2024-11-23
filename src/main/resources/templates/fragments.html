@@ -404,4 +404,24 @@
   </script>
 </div>
 
+<div th:fragment="notification-date-time">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/dayjs.min.js"></script>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      // 모든 createdDateTime 요소를 선택
+      var createdAtElements = document.querySelectorAll('.createdDateTime');
+      createdAtElements.forEach(function(createdAtElement) {
+        // 요소의 텍스트를 가져와서 Day.js를 사용해 포맷
+        var createdAt = createdAtElement.textContent;
+        var formattedDate = dayjs(createdAt).format('YYYY년 MM월 DD일 A hh시 mm분');
+        formattedDate = formattedDate.replace('AM', '오전').replace('PM', '오후');
+
+        // 포맷된 텍스트를 요소의 텍스트로 설정
+        createdAtElement.textContent = formattedDate;
+      });
+    });
+  </script>
+</div>
+
+
 </html>

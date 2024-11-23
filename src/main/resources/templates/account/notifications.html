@@ -70,15 +70,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="/node_modules/dayjs/dayjs.min.js"></script>
-<script type="text/javascript">
-    var createdDateTimeElements = document.querySelectorAll('.createdDateTime');
-    createdDateTimeElements.forEach(function(createdDateTimeElements) {
-        var createdDateTime = createdDateTimeElements.innerText;
-        var formattedReservationTime = dayjs(createdDateTime).format('YYYY년 MM월 DD일 A hh시 mm분');
-        formattedReservationTime = formattedReservationTime.replace('AM', '오전').replace('PM', '오후');
-        createdDateTimeElements.innerText = formattedReservationTime;
-    });
-</script>
+<script th:replace="~{fragments.html :: notification-date-time}"></script>
 <script>
     function cancel(id) {
         var form = document.createElement("form");
