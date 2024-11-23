@@ -1,5 +1,6 @@
 server:
   max-http-request-header-size: 10MB
+  forward-headers-strategy: native
 
 spring:
 
