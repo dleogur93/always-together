@@ -18,6 +18,8 @@ import projlee.modules.item.repository.CategoryRepository;
 import projlee.modules.item.repository.ItemRepository;
 import projlee.modules.item.service.ItemService;
 import projlee.modules.manager.form.DogModifyForm;
+import projlee.modules.order.domain.Order;
+import projlee.modules.order.repository.OrderRepository;
 import projlee.modules.reservation.domain.DogReservation;
 import projlee.modules.reservation.repository.DogReservationRepository;
 
@@ -39,6 +41,7 @@ public class ManagerService {
     private final DogReservationRepository dogReservationRepository;
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
+    private final OrderRepository orderRepository;
 
     public void dogRegistration(DogRegistration dogRegistration) {
         getDog(dogRegistration);
@@ -230,6 +233,15 @@ public class ManagerService {
     public void itemDelete(Long id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item ID"));
+
+        List<Order> orders = orderRepository.findAll();
+
+        for (Order order : orders) {
+            if (order.containsItem(id)) {
+                throw new IllegalArgumentException("이 상품은 이미 주문에 포함되어 있어 삭제할 수 없습니다.");
+            }
+        }
+
 
         // 아이템과 연결된 카테고리들에서 아이템 제거
         for (Category category : new ArrayList<>(item.getCategories())) {

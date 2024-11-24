@@ -113,7 +113,7 @@
                             </a>
                         </li>
                         <li class="page-item" th:classappend="${i == accounts.getNumber()}? active"
-                            th:each="i: ${#numbers.sequence(0, accounts.getTotalPages() - 1)}">
+                            th:each="i: ${#numbers.sequence(0, accounts.getTotalPages() > 0 ? accounts.getTotalpages() -1 : 0)}">
                             <a th:href="@{'/admin/membershipManagement?sort=' + ${sortProperty} + ',desc&page=' + ${i}}"
                                class="page-link" href="#" th:text="${i + 1}">1</a>
                         </li>

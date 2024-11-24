@@ -92,4 +92,14 @@ public class Order {
         return totalPrice;
     }
 
+    public boolean containsItem(Long itemId) {
+        // 주문 내 모든 상품 아이템을 확인하여 해당 상품이 포함되어 있는지 체크
+        for (OrderItem orderItem : orderItems) {
+            if (orderItem.getItem().getId().equals(itemId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
