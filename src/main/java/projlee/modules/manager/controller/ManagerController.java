@@ -276,15 +276,28 @@ public class ManagerController {
         return "redirect:/manager/itemList";
     }
 
+
+    //soft 삭제로직
     @PostMapping("/manager/itemDelete")
     public String itemDelete(@RequestParam("id") Long id, RedirectAttributes attributes) {
 
         managerService.itemDelete(id);
 
+
         attributes.addFlashAttribute("message","삭제 완료");
 
         return "redirect:/manager/itemList";
     }
+
+//    @PostMapping("/manager/itemDelete")
+//    public String itemDelete(@RequestParam("id") Long id, RedirectAttributes attributes) {
+//
+//        managerService.itemDelete(id);
+//
+//        attributes.addFlashAttribute("message","삭제 완료");
+//
+//        return "redirect:/manager/itemList";
+//    }
 
 
     @GetMapping("/manager/banner")

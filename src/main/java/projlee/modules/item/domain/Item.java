@@ -45,9 +45,31 @@ public abstract class Item {
     private List<Category> categories = new ArrayList<>();
 
 
+    /**
+     *
+     * soft 삭제
+     */
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false; // 소프트 삭제 여부
 
 
-    //==========================
+    // 소프트 삭제
+    public void softDelete() {
+        this.isDeleted = true;
+    }
+
+    // 복원
+    public void restore() {
+        this.isDeleted = false;
+    }
+
+    // 삭제 여부 확인
+    public boolean isDeleted() {
+        return this.isDeleted;
+    }
+
+
     public void addStockQuantity(int quantity) {
         this.stockQuantity += quantity;
     }

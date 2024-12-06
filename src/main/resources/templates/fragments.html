@@ -289,8 +289,17 @@
 </div>
 
 <div th:fragment="banner" class="row" id="banner">
-  <img th:if="${banner.bannerImage != null}" th:src="${banner.bannerImage}"
-       width="640" alt="name" th:alt="${banner.bannerName}"/>
+  <img th:if="${banner != null and banner.bannerImage != null}"
+       th:src="${banner.bannerImage}"
+       width="640"
+       alt="name"
+       th:alt="${banner.bannerName}"/>
+
+  <!-- banner가 없거나 이미지가 없으면 기본 이미지를 출력 -->
+  <img th:if="${banner == null or banner.bannerImage == null}"
+       src="/images/title.png"
+       width="640"
+       alt="default title"/>
 </div>
 
 <div th:fragment="item-main-side-nav" class="sidebar centered-text">

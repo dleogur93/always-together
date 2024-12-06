@@ -234,21 +234,20 @@ public class ManagerService {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item ID"));
 
-        List<Order> orders = orderRepository.findAll();
 
-        for (Order order : orders) {
-            if (order.containsItem(id)) {
-                throw new IllegalArgumentException("이 상품은 이미 주문에 포함되어 있어 삭제할 수 없습니다.");
-            }
+        if (item.getStockQuantity() > 0) {
+            throw new IllegalArgumentException("이 상품은 재고가 남아 있어 삭제할 수 없습니다.");
         }
 
+        item.softDelete();
+        itemRepository.save(item);
 
         // 아이템과 연결된 카테고리들에서 아이템 제거
-        for (Category category : new ArrayList<>(item.getCategories())) {
-            category.removeItem(item);
-        }
+//        for (Category category : new ArrayList<>(item.getCategories())) {
+//            category.removeItem(item);
+//        }
 
         // 아이템 삭제
-        itemRepository.delete(item);
+//        itemRepository.delete(item);
     }
 }
