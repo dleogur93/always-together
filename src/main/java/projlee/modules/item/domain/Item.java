@@ -50,6 +50,7 @@ public abstract class Item {
      * soft 삭제
      */
 
+    @Builder.Default
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false; // 소프트 삭제 여부
 
