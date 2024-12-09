@@ -281,10 +281,12 @@ public class ManagerController {
     @PostMapping("/manager/itemDelete")
     public String itemDelete(@RequestParam("id") Long id, RedirectAttributes attributes) {
 
-        managerService.itemDelete(id);
-
-
-        attributes.addFlashAttribute("message","삭제 완료");
+        try {
+            managerService.itemDelete(id);
+            attributes.addFlashAttribute("message", "삭제 완료");
+        } catch (IllegalArgumentException e) {
+            attributes.addFlashAttribute("error", e.getMessage());
+        }
 
         return "redirect:/manager/itemList";
     }
