@@ -280,7 +280,6 @@ public class ManagerController {
     //soft 삭제로직
     @PostMapping("/manager/itemDelete")
     public String itemDelete(@RequestParam("id") Long id, RedirectAttributes attributes) {
-
         try {
             managerService.itemDelete(id);
             attributes.addFlashAttribute("message", "삭제 완료");

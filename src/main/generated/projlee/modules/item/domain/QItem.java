@@ -24,6 +24,8 @@ public class QItem extends EntityPathBase<Item> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final BooleanPath isDeleted = createBoolean("isDeleted");
+
     public final StringPath itemInformation = createString("itemInformation");
 
     public final StringPath itemPicture = createString("itemPicture");

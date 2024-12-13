@@ -20,6 +20,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    <span th:text="${error}"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
 
             <div class="dropdown">
@@ -126,10 +132,16 @@
             const form = $(this); // 클릭된 form 찾기
             const itemId = form.find('input[name="id"]').val(); // 상품 ID 가져오기
 
+            const csrfToken = $('meta[name="_csrf"]').attr('content'); // CSRF 토큰
+            const csrfHeader = $('meta[name="_csrf_header"]').attr('content'); // CSRF 헤더 이름
+
             // AJAX 요청
             $.ajax({
                 url: '/manager/itemDelete', // 삭제 요청 URL
                 method: 'POST',
+                headers: {
+                    [csrfHeader]: csrfToken // CSRF 헤더 추가
+                },
                 data: {
                     id: itemId
                 },
@@ -138,7 +150,7 @@
                     window.location.reload(); // 페이지 새로 고침
                 },
                 error: function (xhr) {
-                    alert('상품 삭제 실패: ' + xhr.responseText); // 실패 시 서버에서 반환한 메시지 출력
+                    alert('상품 삭제 실패'); // 실패 시 서버에서 반환한 메시지 출력  + xhr.responseText
                 }
             });
         });

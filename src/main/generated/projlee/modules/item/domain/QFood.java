@@ -30,6 +30,9 @@ public class QFood extends EntityPathBase<Food> {
     public final NumberPath<Long> id = _super.id;
 
     //inherited
+    public final BooleanPath isDeleted = _super.isDeleted;
+
+    //inherited
     public final StringPath itemInformation = _super.itemInformation;
 
     //inherited
