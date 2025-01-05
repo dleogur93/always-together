@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -228,18 +230,17 @@ public class ManagerController {
         return "redirect:/manager/foodRegistration";
     }
 
-    @GetMapping("manager/itemList")
+    @GetMapping("/manager/itemList")
     public String foodList(@PageableDefault(size = 9, sort = "name", direction = Sort.Direction.DESC) Pageable pageable,
                            @RequestParam(name = "name", required = false ) String name,
                            Model model) {
-
 
         Page<Item> items;
 
         if (name != null && !name.isEmpty()) {
             items = managerService.searchItemsByName(pageable,name);
         } else {
-            items = managerService.itemList(pageable);
+            items = managerService.itemActiveList(pageable);
         }
 
         model.addAttribute("items",items);
@@ -278,17 +279,27 @@ public class ManagerController {
 
 
     //soft 삭제로직
+//    @PostMapping("/manager/itemDelete")
+//    public String itemDelete(@RequestParam("id") Long id, RedirectAttributes attributes) {
+//        try {
+//            managerService.itemDelete(id);
+//            attributes.addFlashAttribute("message", "삭제 완료");
+//        } catch (IllegalArgumentException e) {
+//            attributes.addFlashAttribute("error", e.getMessage());
+//        }
+//
+//        return "redirect:/manager/itemList";
+//    }
     @PostMapping("/manager/itemDelete")
-    public String itemDelete(@RequestParam("id") Long id, RedirectAttributes attributes) {
+    public ResponseEntity<String> itemDelete(@RequestParam("id") Long id) {
         try {
             managerService.itemDelete(id);
-            attributes.addFlashAttribute("message", "삭제 완료");
+            return ResponseEntity.ok("삭제 완료");
         } catch (IllegalArgumentException e) {
-            attributes.addFlashAttribute("error", e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        return "redirect:/manager/itemList";
     }
+
 
 //    @PostMapping("/manager/itemDelete")
 //    public String itemDelete(@RequestParam("id") Long id, RedirectAttributes attributes) {

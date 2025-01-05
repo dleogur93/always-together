@@ -24,7 +24,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     // 활성화된 아이템만 조회
     @Query("SELECT i FROM Item i WHERE i.isDeleted = false")
-    List<Item> findAllActive();
+    Page<Item> findAllActive(Pageable pageable);
 
     // 특정 ID로 활성화된 아이템 조회
     @Query("SELECT i FROM Item i WHERE i.id = :id AND i.isDeleted = false")
@@ -33,6 +33,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     // 삭제된 아이템 포함 모든 데이터 조회
     @Query("SELECT i FROM Item i")
     List<Item> findAllWithDeleted();
+
 
 
 }

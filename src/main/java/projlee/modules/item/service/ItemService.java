@@ -50,17 +50,22 @@ public class ItemService {
         return itemRepository.findByCategoryId(pageable,categoryId);
     }
 
-    // 활성화된 특정 Item 조회
-    public Item getActiveItem(Long id) {
-        return itemRepository.findActiveById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않거나 삭제된 상품입니다."));
+    public Page<Item> itemActiveList(Pageable pageable) {
+
+        return itemRepository.findAllActive(pageable);
     }
 
+    // 활성화된 특정 Item 조회
+//    public Item getActiveItem(Long id) {
+//        return itemRepository.findActiveById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("존재하지 않거나 삭제된 상품입니다."));
+//    }
+
     // 모든 Item 조회 (includeDeleted 조건 포함)
-    public List<Item> getAllItems(boolean includeDeleted) {
-        if (includeDeleted) {
-            return itemRepository.findAllWithDeleted();
-        }
-        return itemRepository.findAllActive();
-    }
+//    public List<Item> getAllItems(boolean includeDeleted) {
+//        if (includeDeleted) {
+//            return itemRepository.findAllWithDeleted();
+//        }
+//        return itemRepository.findAllActive();
+//    }
 }

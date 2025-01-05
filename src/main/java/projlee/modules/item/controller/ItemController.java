@@ -62,9 +62,16 @@ public class ItemController {
                                @RequestParam(value = "direction", defaultValue = "desc") String direction,
                                 Model model) {
 
-        if (account != null) {
-            model.addAttribute("account", account);
+        if (account == null) {
+            model.addAttribute("itemList", itemService.itemFirstPage());
+            model.addAttribute("dogList", dogService.firstPage());
+            return "index";
         }
+
+//        if (account != null) {
+//        }
+
+        model.addAttribute("account", account);
         List<Category> categories = categoryService.findAllCategories();
         Page<Item> items = getItemPage(pageable, itemName);
         model.addAttribute("categories", categories);
@@ -74,11 +81,7 @@ public class ItemController {
         model.addAttribute("banner",bannerService.findOne());
 
 
-        if (account == null) {
-            model.addAttribute("itemList", itemService.itemFirstPage());
-            model.addAttribute("dogList", dogService.firstPage());
-            return "index";
-        }
+
 
         return "item/itemMainList";
     }
@@ -87,7 +90,7 @@ public class ItemController {
         if (itemName != null && !itemName.isEmpty()) {
             return itemService.searchItemsByItemName(pageable, itemName);
         } else {
-            return itemService.itemList(pageable);
+            return itemService.itemActiveList(pageable);
         }
     }
 

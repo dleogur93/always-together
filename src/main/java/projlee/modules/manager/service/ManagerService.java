@@ -189,6 +189,11 @@ public class ManagerService {
         return itemRepository.findAll(pageable);
     }
 
+    public Page<Item> itemActiveList(Pageable pageable) {
+
+        return itemRepository.findAllActive(pageable);
+    }
+
 
     public Page<Item> searchItemsByName(Pageable pageable, String name) {
         return itemRepository.findByNameContainingIgnoreCase(pageable,name);
@@ -233,14 +238,13 @@ public class ManagerService {
     public void itemDelete(Long id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item ID"));
+
         if (item.getStockQuantity() > 0) {
             throw new IllegalArgumentException("이 상품은 재고가 남아 있어 삭제할 수 없습니다.");
         }
 
         item.softDelete();
         itemRepository.save(item);
-
-
     }
     // 아이템과 연결된 카테고리들에서 아이템 제거
 //        for (Category category : new ArrayList<>(item.getCategories())) {
