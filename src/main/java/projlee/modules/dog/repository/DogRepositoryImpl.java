@@ -23,7 +23,11 @@ public class DogRepositoryImpl extends QuerydslRepositorySupport implements DogR
 
         BooleanExpression adoptionFalse = dog.adoption.isFalse();
 
+//        JPQLQuery<Dog> query = from(dog)
+//                .where(adoptionFalse)
+//                .distinct();
         JPQLQuery<Dog> query = from(dog)
+                .leftJoin(dog.dogReservation).fetchJoin()  // ✅ Fetch Join 적용
                 .where(adoptionFalse)
                 .distinct();
 

@@ -316,11 +316,9 @@
   <h2><a th:href="@{'/dog/mainList'}">품종</a></h2>
   <hr>
   <nav class="nav flex-column margin-20">
-    <div th:each="dog : ${dogs}">
+    <div th:each="breed : ${dogBreeds}">
       <div class="nav-item mt-2">
-        <a
-                th:href="@{'/dog/' + ${dog.dogBreed}}"
-                th:text="${dog.dogBreed}"></a>
+        <a th:href="@{'/dog/' + ${breed}}" th:text="${breed}"></a>
       </div>
     </div>
   </nav>

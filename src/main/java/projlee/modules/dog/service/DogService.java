@@ -38,7 +38,7 @@ public class DogService {
 
     public List<Dog> findByDogBreed(String dogBreed) {
 
-      return dogRepository.findByDogBreed(dogBreed);
+      return dogRepository.findByDogBreedWithReservation(dogBreed);
     }
 
     public List<Dog> findAll() {

@@ -68,9 +68,6 @@ public class ItemController {
             return "index";
         }
 
-//        if (account != null) {
-//        }
-
         model.addAttribute("account", account);
         List<Category> categories = categoryService.findAllCategories();
         Page<Item> items = getItemPage(pageable, itemName);

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 
-@Profile("local")
+@Profile("dev")
 @Slf4j
 public class ConsoleMailSender implements JavaMailSender {
     @Override

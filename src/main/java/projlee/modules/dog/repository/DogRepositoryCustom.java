@@ -6,8 +6,8 @@ import projlee.modules.dog.domain.Dog;
 
 public interface DogRepositoryCustom {
 
-    Page<Dog> findAllByAdoptionFalse(Pageable pageable);
 
+    Page<Dog> findAllByAdoptionFalse(Pageable pageable);
 
 }
 

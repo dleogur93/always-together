@@ -2,6 +2,8 @@ package projlee.modules.dog.controller;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,12 +21,17 @@ import projlee.modules.dog.service.DogService;
 import projlee.modules.item.service.ItemService;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.rmi.server.LogStream.log;
 
 @Controller
 @RequiredArgsConstructor
 @Getter
 public class DogController {
 
+    private static final Logger log = LoggerFactory.getLogger(DogController.class);
     private final DogService dogService;
     private final ItemService itemService;
     private final BannerService bannerService;
@@ -55,6 +62,13 @@ public class DogController {
             dogs = dogService.dogList(pageable);
             model.addAttribute("dogs", dogs);
             model.addAttribute("banner",bannerService.findOne());
+
+            Set<String> uniqueBreeds = dogs.stream()
+                    .map(Dog::getDogBreed)
+                    .collect(Collectors.toSet());
+            model.addAttribute("dogBreeds", uniqueBreeds);
+            System.out.println("uniqueBreeds: " + uniqueBreeds);
+
             return "dog/dogMainList";
         }
 
@@ -75,10 +89,16 @@ public class DogController {
         if (account != null) {
             List<Dog> dogsBreed = dogService.findByDogBreed(dogBreed);
             List<Dog> dogs = dogService.findAll();
+            Set<String> uniqueBreeds = dogs.stream()
+                    .map(Dog::getDogBreed)
+                    .collect(Collectors.toSet());
 
+            model.addAttribute("dogBreeds", uniqueBreeds); //sidebar
+            model.addAttribute("dogsBreed", dogsBreed);
             model.addAttribute("account", account);
             model.addAttribute("dogs", dogs);
-            model.addAttribute("dogsBreed", dogsBreed);
+
+
             return "dog/dogBreedList";
         }
 
