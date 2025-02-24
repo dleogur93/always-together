@@ -1,4 +1,4 @@
-# 프로젝트 설정 및 배포 가이드
+# 포토폴리오 설정 및 배포 
 
 ## 기본 환경
 
@@ -43,7 +43,7 @@
 
 ### 1. EC2 보안 그룹 설정
 
-EC2 보안 그룹에서 인바운드 규칙을 설정하여 애플리케이션 접근을 허용해야 합니다.
+EC2 보안 그룹에서 인바운드 규칙을 설정하여 애플리케이션 접근을 허용
 
 - **포트 열기**
   - 80 (HTTP)
@@ -52,7 +52,7 @@ EC2 보안 그룹에서 인바운드 규칙을 설정하여 애플리케이션 �
 
 ### 2. Nginx 리버스 프록시 설정
 
-Spring Boot 애플리케이션을 직접 실행하는 것이 아니라, Nginx를 통해 요청을 프록시하도록 설정합니다.
+Spring Boot 애플리케이션을 직접 실행하는 것이 아니라, Nginx를 통해 요청을 프록시하도록 설정
 
 1. Nginx 설치
 
@@ -78,12 +78,6 @@ server {
 }
 ```
 
-3. Nginx 재시작
-
-```bash
-sudo systemctl restart nginx
-```
-
 ### 3. Route 53 및 DNS 설정
 
 1. 도메인 네임서버 확인
@@ -96,10 +90,4 @@ nslookup alwaystogether.store
 3. Route 53에서 A 레코드를 EC2 퍼블릭 IP로 설정
 
 ---
-
-## 배포 후 점검 사항
-
-- `curl -I http://alwaystogether.store` 로 응답 확인
-- `sudo journalctl -u nginx --no-pager | tail -n 50` 로 Nginx 로그 확인
-- `sudo systemctl status nginx` 및 `sudo systemctl status your-app.service`로 서비스 상태 확인
 
