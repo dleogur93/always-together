@@ -78,8 +78,6 @@ public class ItemController {
         model.addAttribute("banner",bannerService.findOne());
 
 
-
-
         return "item/itemMainList";
     }
 

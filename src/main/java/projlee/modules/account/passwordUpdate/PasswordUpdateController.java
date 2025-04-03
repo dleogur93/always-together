@@ -27,15 +27,6 @@ public class PasswordUpdateController {
         webDataBinder.addValidators(passwordUpdateValidator);
     }
 
-    @GetMapping("/account/password")
-    public String passwordUpdateForm(@CurrentAccount Account account, Model model) {
-
-        model.addAttribute(account);
-        model.addAttribute(new PasswordUpdateForm());
-
-        return "account/password";
-    }
-
     @PostMapping("/account/password")
     public String passwordUpdate(@CurrentAccount Account account, @Valid PasswordUpdateForm passwordUpdateForm,
                                  Errors errors, Model model, RedirectAttributes attributes) {
@@ -47,5 +38,15 @@ public class PasswordUpdateController {
         accountService.updatePassword(account, passwordUpdateForm.getNewPassword());
         attributes.addFlashAttribute("message", "패스워드를 변경했습니다.");
         return "redirect:/account/password";
+    }
+
+
+    @GetMapping("/account/password")
+    public String passwordUpdateForm(@CurrentAccount Account account, Model model) {
+
+        model.addAttribute(account);
+        model.addAttribute(new PasswordUpdateForm());
+
+        return "account/password";
     }
 }

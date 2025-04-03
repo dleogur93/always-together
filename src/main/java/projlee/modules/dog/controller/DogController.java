@@ -53,7 +53,8 @@ public class DogController {
 
     @GetMapping("/dog/mainList")
     public String mainList(@CurrentAccount Account account,
-                           @PageableDefault(size = 18, sort = "dogName", direction = Sort.Direction.DESC) Pageable pageable, Model model){
+                           @PageableDefault(size = 18, sort = "dogName", direction = Sort.Direction.DESC)
+                           Pageable pageable, Model model){
 
         Page<Dog> dogs;
 

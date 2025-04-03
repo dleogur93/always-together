@@ -31,7 +31,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/","/home","/account/sign-up","/checkEmail","/login",
                                         "/sendVerificationCode","/account/idForget","/account/passwordForget"
@@ -53,7 +52,6 @@ public class SecurityConfig {
                         rememberMe
                             .userDetailsService(accountService)
                             .tokenRepository(tokenRepository()));
-
 
         return http.build();
     }

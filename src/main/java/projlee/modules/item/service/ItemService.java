@@ -44,6 +44,7 @@ public class ItemService {
     public Page<Item> searchItemsByItemName(Pageable pageable, String itemName) {
 
         return itemRepository.findByNameContainingIgnoreCase(pageable,itemName);
+
     }
 
     public Page<Item> findByCategoryId(Pageable pageable ,Long categoryId) {

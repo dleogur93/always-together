@@ -31,9 +31,7 @@ public class DogService {
     }
 
     public Page<Dog> dogList(Pageable pageable) {
-
         return dogRepository.findAllByAdoptionFalse(pageable);
-
     }
 
     public List<Dog> findByDogBreed(String dogBreed) {

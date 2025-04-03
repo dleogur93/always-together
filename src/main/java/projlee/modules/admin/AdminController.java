@@ -49,7 +49,7 @@ public class AdminController {
         for (Sort.Order order : pageable.getSort()) {
             sortProperty = order.getProperty();
             sortDirection = order.getDirection().name().toLowerCase();
-            break;  // We expect only one sort order
+            break;
         }
 
         model.addAttribute("accounts", accounts);

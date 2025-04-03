@@ -45,7 +45,6 @@ public class ManagerService {
 
     public void dogRegistration(DogRegistration dogRegistration) {
         getDog(dogRegistration);
-
     }
 
     private void getDog(DogRegistration dogRegistration) {
@@ -168,7 +167,6 @@ public class ManagerService {
         // Food 객체 저장
         itemRepository.save(food);
 
-
     }
 
     private static Food createFood(FoodForm form) {
@@ -246,6 +244,8 @@ public class ManagerService {
         item.softDelete();
         itemRepository.save(item);
     }
+
+
     // 아이템과 연결된 카테고리들에서 아이템 제거
 //        for (Category category : new ArrayList<>(item.getCategories())) {
 //            category.removeItem(item);

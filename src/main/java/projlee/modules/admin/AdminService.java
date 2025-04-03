@@ -18,7 +18,6 @@ public class AdminService {
     private final AccountRepository accountRepository;
 
     public Page<Account> accountList(Pageable pageable) {
-
         return accountRepository.findAll(pageable);
     }
 

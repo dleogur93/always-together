@@ -98,10 +98,7 @@ public class AccountService implements UserDetailsService {
             // 기존 정보 삭제
             verificationCodeRepository.delete(existingCode);
         }
-
         if (isEmailUnique(createAccountForm.getEmail())) {
-
-
             String code = verificationCodeService.generateCode();
             verificationCodeService.saveCode(createAccountForm, code);
 
@@ -111,7 +108,6 @@ public class AccountService implements UserDetailsService {
 
             String message = templateEngine.process("mail/verifyCodeMail",context);
 
-
             EmailMessage emailMessage = EmailMessage.builder()
                     .to(createAccountForm.getEmail())
                     .subject("회원 가입 인증번호")
@@ -119,12 +115,10 @@ public class AccountService implements UserDetailsService {
                     .build();
 
             emailService.sendEmail(emailMessage);
-
             return "이메일을 보냈습니다.";
         } else {
             return "이미 존재하는 이메일 입니다.";
         }
-
     }
 
 

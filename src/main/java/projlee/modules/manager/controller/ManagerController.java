@@ -62,15 +62,14 @@ public class ManagerController {
      * 유기견 등록
      */
     @PostMapping("/manager/dogRegistration")
-    public String managerDogRegistration(@Valid DogRegistration dogRegistration, BindingResult result, RedirectAttributes attributes
+    public String managerDogRegistration(@Valid DogRegistration dogRegistration,
+                                         BindingResult result, RedirectAttributes attributes
                                         ) {
-
         if (result.hasErrors()) {
             return "manager/dogRegistration";
         }
 
         managerService.dogRegistration(dogRegistration);
-
 
         attributes.addFlashAttribute("dog","등록 완료했습니다.");
 

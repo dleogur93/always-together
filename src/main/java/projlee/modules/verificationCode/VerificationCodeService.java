@@ -21,10 +21,7 @@ public class VerificationCodeService {
 
 
     public String generateCode() {
-        // Generate and return a verification code
-        // 여기에서는 간단한 랜덤 문자열을 생성하는 방법을 사용하겠습니다.
         try {
-            // Generate and return a verification code
             return RandomStringUtils.randomAlphanumeric(6);
         } catch (Exception e) {
             e.printStackTrace(); // 예외 발생 시 콘솔에 로그 출력
@@ -34,7 +31,6 @@ public class VerificationCodeService {
 
     @Transactional
     public void saveCode(@Valid CreateAccountForm createAccountForm, String code) {
-        // Save the verification code with expiration time to the database
 
         // 만료 시간 설정 (예: 현재 시간으로부터 10분 후)
         LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(10);

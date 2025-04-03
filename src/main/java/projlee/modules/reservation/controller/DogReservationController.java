@@ -43,22 +43,15 @@ public class DogReservationController {
     @PostMapping("/reservation/dog")
     public String dogReservation(@RequestParam("accountId") Long accountId,
                                  @RequestParam("dogId") Long dogId,
-                                 @CurrentAccount Account account, @Valid DogReservationForm dogReservationForm, BindingResult result, Model model
-                                ){
-
+                                 @CurrentAccount Account account, @Valid DogReservationForm dogReservationForm, BindingResult result, Model model){
         if (result.hasErrors()) {
             model.addAttribute("account",account);
             model.addAttribute("dog", dogService.getDog(dogId));
             return "dog/dogReservation";
         }
-
-
         if (account != null) {
-
             String stringDateTime = dogReservationForm.getReservationDate() + "T" + dogReservationForm.getReservationTime();
             LocalDateTime reservationDateTime;
-
-
             try {
                 reservationDateTime = LocalDateTime.parse(stringDateTime);
             } catch (DateTimeParseException e) {
@@ -67,23 +60,17 @@ public class DogReservationController {
                 model.addAttribute("dog", dogService.getDog(dogId));
                 return "dog/dogReservation";
             }
-
-            // Check if the reservation date is today or before
             if (reservationDateTime.isBefore(LocalDateTime.now())) {
                 result.rejectValue("reservationDate", "invalid.date", "상담예약 날짜는 현재시각 이후로만 가능합니다.");
                 model.addAttribute("account",account);
                 model.addAttribute("dog", dogService.getDog(dogId));
                 return "dog/dogReservation";
             }
-
-
             dogReservationService.createDogReservation(accountId,dogId,reservationDateTime);
             model.addAttribute("account",account);
             model.addAttribute("dog", dogService.getDog(dogId));
             return "redirect:/";
         }
-
-
         return "dog/dogReservation";
     }
 
