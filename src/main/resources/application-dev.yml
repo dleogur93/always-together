@@ -19,7 +19,7 @@ spring:
 
 
   datasource:
-    url: jdbc:mysql://always-together-db.cp6cewyqi7qr.ap-northeast-2.rds.amazonaws.com:3306/always-together-db
+    url: jdbc:mysql://always-together-db.cp6cewyqi7qr.ap-northeast-2.rds.amazonaws.com:3306/alwaystogetherdb;
     username: admin
     password: Ss029018$$
     driver-class-name: com.mysql.cj.jdbc.Driver
