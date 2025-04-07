@@ -22,3 +22,4 @@ jobs:
             ./gradlew build -x test  # 테스트 제외하고 빌드
             sudo fuser -k -n tcp 8080 || true 
             nohup java -Xmx512m -jar build/libs/proj-lee-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev > /dev/null 2>&1 & disown
+            exit 0
