@@ -41,18 +41,18 @@
             <nav>
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${!dogs.hasPrevious()}? disabled">
-                        <a th:href="@{'/dog/mainList?sort=dogName,asc&page=' + ${dogs.getNumber() - 1}}"
+                        <a th:href="@{'/dog/mainList?sort=dogName,desc&page=' + ${dogs.getNumber() - 1}}"
                            class="page-link" tabindex="-1" aria-disabled="true">
                             이전
                         </a>
                     </li>
                     <li class="page-item" th:classappend="${i == dogs.getNumber()}? active"
                         th:each="i: ${#numbers.sequence(0, dogs.getTotalPages()  > 0 ? dogs.getTotalPages() - 1 : 0)}">
-                        <a th:href="@{'/dog/mainList?sort=dogName,asc&page=' + ${i}}"
+                        <a th:href="@{'/dog/mainList?sort=dogName,desc&page=' + ${i}}"
                            class="page-link" href="#" th:text="${i + 1}">1</a>
                     </li>
                     <li class="page-item" th:classappend="${!dogs.hasNext()}? disabled">
-                        <a th:href="@{'/dog/mainList?sort=dogName,asc&page=' + ${dogs.getNumber() + 1}}"
+                        <a th:href="@{'/dog/mainList?sort=dogName,desc&page=' + ${dogs.getNumber() + 1}}"
                            class="page-link">
                             다음
                         </a>
