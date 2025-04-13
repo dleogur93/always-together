@@ -64,11 +64,13 @@ public class DogController {
             model.addAttribute("dogs", dogs);
             model.addAttribute("banner",bannerService.findOne());
 
-            Set<String> uniqueBreeds = dogs.stream()
-                    .map(Dog::getDogBreed)
-                    .collect(Collectors.toSet());
-            model.addAttribute("dogBreeds", uniqueBreeds);
-            System.out.println("uniqueBreeds: " + uniqueBreeds);
+            model.addAttribute("dogBreeds", dogService.getAllBreeds());
+
+//            Set<String> uniqueBreeds = dogs.stream()
+//                    .map(Dog::getDogBreed)
+//                    .collect(Collectors.toSet());
+//            model.addAttribute("dogBreeds", uniqueBreeds);
+//            System.out.println("uniqueBreeds: " + uniqueBreeds);
 
             return "dog/dogMainList";
         }

@@ -42,4 +42,8 @@ public class DogService {
     public List<Dog> findAll() {
         return dogRepository.findAll();
     }
+
+    public List<String> getAllBreeds() {
+        return dogRepository.findAllAvailableDogBreeds();
+    }
 }

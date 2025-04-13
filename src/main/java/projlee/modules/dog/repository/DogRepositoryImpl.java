@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import projlee.modules.dog.domain.Dog;
 import projlee.modules.dog.domain.QDog;
 
+import java.util.List;
+
 public class DogRepositoryImpl extends QuerydslRepositorySupport implements DogRepositoryCustom{
 
 
@@ -23,9 +25,7 @@ public class DogRepositoryImpl extends QuerydslRepositorySupport implements DogR
 
         BooleanExpression adoptionFalse = dog.adoption.isFalse();
 
-//        JPQLQuery<Dog> query = from(dog)
-//                .where(adoptionFalse)
-//                .distinct();
+
         JPQLQuery<Dog> query = from(dog)
                 .leftJoin(dog.dogReservation).fetchJoin()  // ✅ Fetch Join 적용
                 .where(adoptionFalse)
@@ -37,4 +37,19 @@ public class DogRepositoryImpl extends QuerydslRepositorySupport implements DogR
         return new PageImpl<>(fetchResults.getResults(), pageable, fetchResults.getTotal());
 
     }
+
+
+    @Override
+    public List<String> findAllAvailableDogBreeds() {
+        QDog dog = QDog.dog;
+
+        JPQLQuery<String> query = from(dog)
+                .select(dog.dogBreed)
+                .where(dog.adoption.isFalse())
+                .distinct();
+
+        return query.fetch();
+    }
 }
+
+
