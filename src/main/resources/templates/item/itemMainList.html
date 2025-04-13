@@ -80,7 +80,7 @@
                             </li>
 
                             <li class="page-item" th:classappend="${!items.hasNext()}? disabled">
-                                <a th:href="@{'/item/mainList?sort=registrationDate,asc&page=' + ${items.getNumber() - 1}}"
+                                <a th:href="@{'/item/mainList?sort=registrationDate,asc&page=' + ${items.getNumber() + 1}}"
                                    class="page-link">
                                     다음
                                 </a>

@@ -70,7 +70,6 @@ public class DogController {
 //                    .map(Dog::getDogBreed)
 //                    .collect(Collectors.toSet());
 //            model.addAttribute("dogBreeds", uniqueBreeds);
-//            System.out.println("uniqueBreeds: " + uniqueBreeds);
 
             return "dog/dogMainList";
         }
