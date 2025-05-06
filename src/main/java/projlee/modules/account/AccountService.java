@@ -39,8 +39,11 @@ import static projlee.modules.account.domain.Role.*;
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
-    private final AccountRepository accountRepository;
     private final VerificationCodeService verificationCodeService;
+
+
+
+    private final AccountRepository accountRepository;
     private final VerificationCodeRepository verificationCodeRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;

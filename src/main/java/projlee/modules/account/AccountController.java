@@ -84,14 +84,13 @@ public class AccountController {
             model.addAttribute("error", "Invalid verification code.");
             return "account/sign-up";
         }
-
     }
+
 ////////////////////////////////////////////
     @PostMapping("/checkEmail")
     @ResponseBody
     public String checkEmail(@RequestParam(name = "email") String email) {
         return accountService.isEmailUnique(email) ? "OK" : "Duplicated";
-
     }
 
     @PostMapping("/sendVerificationCode")

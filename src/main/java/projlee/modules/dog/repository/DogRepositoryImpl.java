@@ -26,15 +26,8 @@ public class DogRepositoryImpl extends QuerydslRepositorySupport implements DogR
         BooleanExpression adoptionFalse = dog.adoption.isFalse();
 
 
-//        JPQLQuery<Dog> query = from(dog)
-//                .leftJoin(dog.dogReservation).fetchJoin()  // ✅ Fetch Join 적용
-//                .where(adoptionFalse)
-//                .distinct();
-//
-//        JPQLQuery<Dog> pageableQuery = getQuerydsl().applyPagination(pageable, query);
-//        QueryResults<Dog> fetchResults = pageableQuery.fetchResults();
-
         // ✅ Content 쿼리 - fetch join 포함
+
         List<Dog> content = getQuerydsl()
                 .applyPagination(pageable,
                         from(dog)
@@ -49,6 +42,18 @@ public class DogRepositoryImpl extends QuerydslRepositorySupport implements DogR
                 .fetchCount();
 
         return new PageImpl<>(content, pageable, total);
+
+
+//        JPQLQuery<Dog> query = from(dog)
+//                .leftJoin(dog.dogReservation).fetchJoin()  // ✅ Fetch Join 적용
+//                .where(adoptionFalse)
+//                .distinct();
+//
+//        JPQLQuery<Dog> pageableQuery = getQuerydsl().applyPagination(pageable, query);
+//        QueryResults<Dog> fetchResults = pageableQuery.fetchResults();
+
+
+
 //        return new PageImpl<>(fetchResults.getResults(), pageable, fetchResults.getTotal());
 
     }
